@@ -1,0 +1,2 @@
+- Outfit is now the one and only font
+- Smaller app size
