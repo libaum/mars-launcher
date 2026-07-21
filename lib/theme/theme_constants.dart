@@ -13,14 +13,8 @@ const COLOR_ACCENT = Color(0xffc9184a);
 const COLOR_ACCENT_HIGHLIGHT = Color(0xffEA4876);
 const COLOR_DIALOG_BUTTONS = Color(0xffFF6F5C);
 
-/// Default font (used as fallback and initial value)
+/// The one font. Mars is opinionated — no font switching.
 const FONT = "Outfit";
-
-/// All selectable fonts — order determines cycle direction in settings
-const List<String> AVAILABLE_FONTS = ["NotoSans", "Outfit", "Geist", "SpaceGrotesk"];
-
-/// Display names for fonts shown in settings (fallback: font key itself)
-const Map<String, String> FONT_DISPLAY_NAMES = {"SpaceGrotesk": "Space"};
 
 /// Settings page text styles
 const TEXT_STYLE_SETTINGS_TITLE = TextStyle(fontSize: 35, fontWeight: FontWeight.w300);
@@ -81,7 +75,7 @@ TimePickerThemeData _timePickerTheme({required bool border}) => TimePickerThemeD
   ),
 );
 
-ThemeData buildLightTheme(String font) => ThemeData(
+ThemeData buildLightTheme() => ThemeData(
   colorScheme: ColorScheme.light(
     surface: COLOR_LIGHT_BACKGROUND,
     primary: COLOR_LIGHT_PRIMARY,
@@ -98,7 +92,7 @@ ThemeData buildLightTheme(String font) => ThemeData(
     contentTextStyle: TextStyle(color: COLOR_LIGHT_BACKGROUND),
     titleTextStyle: TextStyle(
       fontSize: 20,
-      fontFamily: font,
+      fontFamily: FONT,
       fontWeight: FontWeight.w300,
       color: COLOR_LIGHT_BACKGROUND,
     ),
@@ -108,7 +102,7 @@ ThemeData buildLightTheme(String font) => ThemeData(
   dialogBackgroundColor: COLOR_LIGHT_PRIMARY,
   primaryColor: Colors.black,
   disabledColor: COLOR_ACCENT,
-  fontFamily: font,
+  fontFamily: FONT,
   scaffoldBackgroundColor: COLOR_LIGHT_BACKGROUND,
   brightness: Brightness.light,
   iconTheme: IconThemeData(color: COLOR_LIGHT_PRIMARY),
@@ -119,7 +113,7 @@ ThemeData buildLightTheme(String font) => ThemeData(
   timePickerTheme: _timePickerTheme(border: false),
 );
 
-ThemeData buildDarkTheme(String font) => ThemeData(
+ThemeData buildDarkTheme() => ThemeData(
   colorScheme: ColorScheme.dark(
     surface: COLOR_DARK_BACKGROUND,
     primary: COLOR_DARK_PRIMARY,
@@ -136,7 +130,7 @@ ThemeData buildDarkTheme(String font) => ThemeData(
     contentTextStyle: TextStyle(color: COLOR_DARK_PRIMARY),
     titleTextStyle: TextStyle(
       fontSize: 20,
-      fontFamily: font,
+      fontFamily: FONT,
       fontWeight: FontWeight.w300,
       color: COLOR_DARK_PRIMARY,
     ),
@@ -147,7 +141,7 @@ ThemeData buildDarkTheme(String font) => ThemeData(
   ),
   primaryColor: COLOR_DARK_PRIMARY,
   disabledColor: COLOR_ACCENT,
-  fontFamily: font,
+  fontFamily: FONT,
   scaffoldBackgroundColor: COLOR_DARK_BACKGROUND,
   brightness: Brightness.dark,
   iconTheme: IconThemeData(color: COLOR_DARK_PRIMARY),

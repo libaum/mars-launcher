@@ -21,7 +21,6 @@ class ThemeManager {
   late Color lightBackground;
   late Color darkBackground;
   late Color searchTextColor;
-  late ValueNotifier<String> fontNotifier;
 
   ThemeManager() {
     themeModeNotifier = ThemeModeNotifier<ThemeMode>(
@@ -30,7 +29,6 @@ class ThemeManager {
     lightBackground = Color(sharedPrefsManager.readData(Keys.lightBackground) ?? Colors.white.value);
     darkBackground = Color(sharedPrefsManager.readData(Keys.darkBackground) ?? Colors.black.value);
     searchTextColor = Color(sharedPrefsManager.readData(Keys.searchColor) ?? COLOR_ACCENT.value);
-    fontNotifier = ValueNotifier(sharedPrefsManager.readData(Keys.font) ?? FONT);
   }
 
   bool get isDarkMode {
@@ -38,7 +36,7 @@ class ThemeManager {
   }
 
   ThemeData get lightTheme {
-    return buildLightTheme(fontNotifier.value).copyWith(
+    return buildLightTheme().copyWith(
       scaffoldBackgroundColor: lightBackground,
       colorScheme: ColorScheme.light(
         surface: lightBackground,
@@ -50,7 +48,7 @@ class ThemeManager {
   }
 
   ThemeData get darkTheme {
-    return buildDarkTheme(fontNotifier.value).copyWith(
+    return buildDarkTheme().copyWith(
       scaffoldBackgroundColor: darkBackground,
       colorScheme: ColorScheme.light(
         surface: darkBackground,
@@ -59,13 +57,6 @@ class ThemeManager {
         brightness: Brightness.dark,
       ),
     );
-  }
-
-  void cycleFont() {
-    final idx = AVAILABLE_FONTS.indexOf(fontNotifier.value);
-    fontNotifier.value = AVAILABLE_FONTS[(idx + 1) % AVAILABLE_FONTS.length];
-    sharedPrefsManager.saveData(Keys.font, fontNotifier.value);
-    themeModeNotifier.notify();
   }
 
   get systemUiOverlayStyle {

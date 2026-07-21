@@ -61,15 +61,6 @@ flutter:
     - assets/
 
   fonts:
-    - family: NotoSans
-      fonts:
-        - asset: "assets/fonts/NotoSans-VariableFont_wdth,wght.ttf"
     - family: Outfit
       fonts:
         - asset: assets/fonts/Outfit-VariableFont_wght.ttf
-    - family: Geist
-      fonts:
-        - asset: assets/fonts/Geist-VariableFont_wght.ttf
-    - family: SpaceGrotesk
-      fonts:
-        - asset: assets/fonts/SpaceGrotesk-VariableFont_wght.ttf

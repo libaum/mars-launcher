@@ -237,7 +237,6 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
                             //     },
                             //     name: Strings.settingsColors),
                             //
-                            buildFontRow(),
 
                             /// ---- Other ----
                             _sectionHeader(context, Strings.settingsGroupOther),
@@ -400,27 +399,6 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
     );
   }
 
-  Row buildFontRow() {
-    return Row(
-      children: [
-        GenericSettingsButton(
-            onPressed: () => themeManager.cycleFont(),
-            name: "font"),
-        Expanded(child: Container()),
-        ValueListenableBuilder<String>(
-            valueListenable: themeManager.fontNotifier,
-            builder: (context, font, child) {
-              return SizedBox(
-                width: 120,
-                child: TextButton(
-                  onPressed: () => themeManager.cycleFont(),
-                  child: Center(child: Text(FONT_DISPLAY_NAMES[font] ?? font, style: TEXT_STYLE_SETTINGS_ITEM)),
-                ),
-              );
-            }),
-      ],
-    );
-  }
 
   Row buildAppsNumberRow() {
     return Row(
