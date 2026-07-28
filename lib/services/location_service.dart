@@ -3,7 +3,7 @@ import 'package:location/location.dart';
 
 class LocationService {
   final location = new Location();
-  var locationData = LocationData.fromMap(Map());
+  LocationData? locationData;
 
   Future<bool> isServiceEnabled() async {
     try {

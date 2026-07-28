@@ -63,7 +63,7 @@ class TemperatureManager {
 
     /// Get current location from locationService
     await locationService.updateLocation();
-    if (locationService.locationData.latitude == null || locationService.locationData.longitude == null) {
+    if (locationService.locationData?.latitude == null || locationService.locationData?.longitude == null) {
       return couldNotRetrieveNewTemperature("[$runtimeType] latitude or longitude == null");
     }
 
@@ -75,8 +75,8 @@ class TemperatureManager {
       final response = await weatherApi.request(
         locations: {
           OpenMeteoLocation(
-          latitude: locationService.locationData.latitude!,
-          longitude: locationService.locationData.longitude!,
+          latitude: locationService.locationData!.latitude,
+          longitude: locationService.locationData!.longitude,
           startDate: now,
           endDate: now,
           )
