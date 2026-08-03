@@ -1,32 +1,32 @@
 class Strings {
   /// Settings page names
   static const settingsTitle = "Settings";
-  static const settingsClockApp = "clock app";
-  static const settingsBattery = "battery";
-  static const settingsWeatherApp = "weather app";
-  static const settingsCalendarApp = "calendar app";
-  static const settingsSwipeLeft = "swipe left";
-  static const settingsSwipeRight = "swipe right";
-  static const settingsHiddenApps = "hidden apps";
-  static const settingsMarsApps = "mars apps";
+  static const settingsClockApp = "Clock app";
+  static const settingsBattery = "Battery";
+  static const settingsWeatherApp = "Weather app";
+  static const settingsCalendarApp = "Calendar app";
+  static const settingsSwipeLeft = "Swipe left";
+  static const settingsSwipeRight = "Swipe right";
+  static const settingsHiddenApps = "Hidden apps";
+  static const settingsMarsApps = "Mars apps";
   static const marsAppsTitle = "Mars apps";
-  static const settingsCredits = "about";
-  static const settingsColors = "colors";
-  static const settingsMore = "more";
-  static const settingsChangeDefaultLauncher = "set default launcher";
-  static const settingsAppNumber = "app number";
+  static const settingsCredits = "About";
+  static const settingsColors = "Colors";
+  static const settingsMore = "More";
+  static const settingsChangeDefaultLauncher = "Set default launcher";
+  static const settingsAppNumber = "App number";
   static const String settingsKeyboardAutofocus = "Keyboard";
 
-  static const settingsGroupAppShortcuts = " app shortcuts";
-  static const settingsGroupAppearance = " appearance";
-  static const settingsGroupOther = " other";
+  static const settingsGroupAppShortcuts = " App shortcuts";
+  static const settingsGroupAppearance = " Appearance";
+  static const settingsGroupOther = " Other";
 
   static const creditsTitle = "About";
   static const cheatSheetTitle = "Cheat Sheet";
   static const settingsColorsTitle = "Colors";
-  static const settingsColorsSearchColor = "search color";
-  static const settingsColorsLightBackground = "light background";
-  static const settingsColorsDarkBackground = "dark background";
+  static const settingsColorsSearchColor = "Search color";
+  static const settingsColorsLightBackground = "Light background";
+  static const settingsColorsDarkBackground = "Dark background";
 
   /// Standard names
   static const defaultTemperatureString = "-°C";
@@ -46,19 +46,19 @@ class Strings {
   /// Indices 0..3 carry first-launch tutorial hints; later slots fall back
   /// to [shortcutPlaceholderDefault].
   static const shortcutPlaceholders = [
-    'hold here to set an app',
-    'swipe up to search',
-    'hold void for settings',
-    'double tap to flip theme',
+    'Hold here to set an app',
+    'Swipe up to search',
+    'Hold void for settings',
+    'Double tap to flip theme',
   ];
-  static const shortcutPlaceholderDefault = 'hold to set an app';
+  static const shortcutPlaceholderDefault = 'Hold to set an app';
 
   /// First-launch tip shown as a SnackBar.
-  static const firstLaunchTip = 'tip: find all commands in cheat sheet';
-  static const firstLaunchTipAction = 'open';
+  static const firstLaunchTip = 'Tip: find all commands in cheat sheet';
+  static const firstLaunchTipAction = 'Open';
 
   /// Flight manual
-  static const settingsFlightManual = "cheat sheet";
+  static const settingsFlightManual = "Cheat sheet";
 }
 
 /// Shared preferences keys

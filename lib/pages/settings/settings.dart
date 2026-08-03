@@ -123,7 +123,7 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0,10, 0, 40),
+                    padding: const EdgeInsets.fromLTRB(0,18, 0, 40),
                     child: SingleChildScrollView(
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,7 +133,8 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
                                 onPressed: () {
                                   pushOtherPage(FlightManual());
                                 },
-                                name: Strings.settingsFlightManual),
+                                name: Strings.settingsFlightManual,
+                                showChevron: true),
 
                             /// SET DEFAULT LAUNCHER
                             GenericSettingsButton(
@@ -245,13 +246,15 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
                                 onPressed: () {
                                   pushOtherPage(HiddenApps());
                                 },
-                                name: Strings.settingsHiddenApps),
+                                name: Strings.settingsHiddenApps,
+                                showChevron: true),
 
                             GenericSettingsButton(
                                 onPressed: () {
                                   pushOtherPage(MarsAppsSettings());
                                 },
-                                name: Strings.settingsMarsApps),
+                                name: Strings.settingsMarsApps,
+                                showChevron: true),
 
                             /// KEYBOARD AUTOFOCUS
                             ///buildKeyboardAutofocusRow(),
@@ -260,7 +263,8 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
                                 onPressed: () {
                                   pushOtherPage(Credits());
                                 },
-                                name: Strings.settingsCredits),
+                                name: Strings.settingsCredits,
+                                showChevron: true),
                           ]),
                     ),
                   ),
@@ -421,7 +425,8 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
                       settingsManager.setNotifierValueAndSave(
                           settingsManager.numberOfShortcutItemsNotifier);
                     },
-                    child: Center(
+                    child: Align(
+                        alignment: Alignment.centerRight,
                         child: Text(numOfShortcutItems.toString(),
                             style: TEXT_STYLE_SETTINGS_ITEM)),
                   ));
@@ -471,7 +476,8 @@ class ShowHideButton extends StatelessWidget {
           builder: (context, enabled, child) {
             return SizedBox(
               width: 70,
-              child: Center(
+              child: Align(
+                alignment: Alignment.centerRight,
                 child: Text(
                   enabled ? "●" : "○",
                   style: TEXT_STYLE_SETTINGS_ITEM,

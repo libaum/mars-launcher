@@ -6,23 +6,23 @@ import 'package:mars_launcher/theme/theme_manager.dart';
 import 'package:mars_launcher/services/service_locator.dart';
 
 const _sections = <(String, List<(String, String)>)>[
-  ('core', [
-    ('tap app', 'open'),
-    ('hold app', 'reassign'),
-    ('hold void', 'settings'),
-    ('double tap', 'toggle theme'),
+  ('Core', [
+    ('Tap app', 'Open'),
+    ('Hold app', 'Reassign'),
+    ('Hold void', 'Settings'),
+    ('Double tap', 'Toggle theme'),
   ]),
-  ('navigation', [
-    ('swipe up', 'search'),
-    ('swipe down', 'mars apps'),
-    ('swipe left', 'quick app 1'),
-    ('swipe right', 'quick app 2'),
+  ('Navigation', [
+    ('Swipe up', 'Search'),
+    ('Swipe down', 'Mars apps'),
+    ('Swipe left', 'Quick app 1'),
+    ('Swipe right', 'Quick app 2'),
   ]),
-  ('widgets', [
-    ('tap widget', 'open linked app'),
-    ('hold clock', 'alarm maker'),
-    ('hold event', 'todo list'),
-    ('hold temp', 'sunrise/sunset'),
+  ('Widgets', [
+    ('Tap widget', 'Open linked app'),
+    ('Hold clock', 'Alarm maker'),
+    ('Hold event', 'Todo list'),
+    ('Hold temp', 'Sunrise/sunset'),
   ]),
 ];
 

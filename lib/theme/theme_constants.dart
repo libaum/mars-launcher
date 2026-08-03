@@ -17,8 +17,8 @@ const COLOR_DIALOG_BUTTONS = Color(0xffFF6F5C);
 const FONT = "Outfit";
 
 /// Settings page text styles
-const TEXT_STYLE_SETTINGS_TITLE = TextStyle(fontSize: 35, fontWeight: FontWeight.w300);
-const TEXT_STYLE_SETTINGS_ITEM = TextStyle(fontSize: 22, height: 1, fontWeight: FontWeight.w200);
+const TEXT_STYLE_SETTINGS_TITLE = TextStyle(fontSize: 30, fontWeight: FontWeight.w300);
+const TEXT_STYLE_SETTINGS_ITEM = TextStyle(fontSize: 19, height: 1, fontWeight: FontWeight.w200);
 
 /// Named text styles — fontFamily intentionally omitted so they inherit from ThemeData
 const TEXT_STYLE_APP_SMALL = TextStyle(fontSize: 20, fontWeight: FontWeight.w200);
