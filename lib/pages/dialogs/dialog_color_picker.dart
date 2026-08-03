@@ -21,6 +21,7 @@ class ColorPickerDialog extends StatelessWidget {
     const textButton = 'Apply';
 
     final buttonStyle = getDialogButtonStyle(themeManager.isDarkMode);
+    final resetButtonStyle = getDialogButtonStyle(themeManager.isDarkMode, isDestructive: true);
 
     late Color selectedColor;
     late Color defaultColor;
@@ -63,7 +64,7 @@ class ColorPickerDialog extends StatelessWidget {
                     themeManager.setColor(colorType, defaultColor);
                     Navigator.of(context).pop();
                   },
-                  style: buttonStyle,
+                  style: resetButtonStyle,
                   child: const Text('Reset'),
                 ),
                 TextButton(

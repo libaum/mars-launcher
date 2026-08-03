@@ -36,12 +36,14 @@ const TEXT_STYLE_DIALOG_BUTTON = TextStyle(fontSize: 14, fontWeight: FontWeight.
 
 
 
-ButtonStyle getDialogButtonStyle(isDarkMode) {
+/// Dialogs always have a black surface with white text, in both themes.
+/// [isDestructive] is the only reason a dialog button should use [COLOR_ACCENT].
+ButtonStyle getDialogButtonStyle(isDarkMode, {bool isDestructive = false}) {
   return ButtonStyle(
       overlayColor: WidgetStateProperty.all<Color>(
         isDarkMode ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.05),
       ),
-      foregroundColor: WidgetStateProperty.all<Color>(COLOR_ACCENT),
+      foregroundColor: WidgetStateProperty.all<Color>(isDestructive ? COLOR_ACCENT : Colors.white),
       textStyle: WidgetStateProperty.all(TEXT_STYLE_DIALOG_BUTTON),
       shape: WidgetStateProperty.all(RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(3.0)),
@@ -64,10 +66,10 @@ TimePickerThemeData _timePickerTheme({required bool border}) => TimePickerThemeD
   entryModeIconColor: Colors.white,
   helpTextStyle: const TextStyle(color: Colors.white54, fontSize: 12),
   cancelButtonStyle: ButtonStyle(
-    foregroundColor: WidgetStateProperty.all(COLOR_ACCENT),
+    foregroundColor: WidgetStateProperty.all(Colors.white),
   ),
   confirmButtonStyle: ButtonStyle(
-    foregroundColor: WidgetStateProperty.all(COLOR_ACCENT),
+    foregroundColor: WidgetStateProperty.all(Colors.white),
   ),
   shape: RoundedRectangleBorder(
     borderRadius: const BorderRadius.all(Radius.circular(4.0)),

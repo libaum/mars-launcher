@@ -65,19 +65,20 @@ class _AppNameTextFieldWithValidation extends State<AppNameTextFieldWithValidati
 
     bool isDarkMode = isThemeDark(context);
     final buttonStyle = getDialogButtonStyle(isDarkMode);
+    final resetButtonStyle = getDialogButtonStyle(isDarkMode, isDestructive: true);
 
     return Column(
       children: [
         TextField(
           maxLength: MAX_LENGTH_RENAMED_APP,
           controller: _controller,
-          cursorColor: COLOR_ACCENT,
-          style: const TextStyle(color: COLOR_ACCENT),
+          cursorColor: isDarkMode ? Colors.white : Colors.black,
+          style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
           decoration: InputDecoration(
               errorText: _errorText,
               filled: true,
               fillColor: isDarkMode ? Colors.white.withValues(alpha: 0.07) : Colors.white,
-              focusColor: Colors.redAccent,
+              focusColor: isDarkMode ? Colors.white : Colors.black,
               hintText: "Enter new name",
               hintStyle: TextStyle(
                 color: Colors.black54,
@@ -97,7 +98,7 @@ class _AppNameTextFieldWithValidation extends State<AppNameTextFieldWithValidati
                       Navigator.pop(context, widget.appName);
                     }
                   },
-                  style: buttonStyle,
+                  style: resetButtonStyle,
                   child: const Text("Reset")),
               TextButton(
                 onPressed: () {
