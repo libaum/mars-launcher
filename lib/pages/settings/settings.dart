@@ -419,16 +419,15 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
             valueListenable: settingsManager.numberOfShortcutItemsNotifier,
             builder: (context, numOfShortcutItems, child) {
               return SizedBox(
-                  width: 86,
+                  width: 60,
                   child: TextButton(
                     onPressed: () {
                       settingsManager.setNotifierValueAndSave(
                           settingsManager.numberOfShortcutItemsNotifier);
                     },
-                    child: Align(
-                        alignment: Alignment.centerRight,
+                    child: Center(
                         child: Text(numOfShortcutItems.toString(),
-                            style: TEXT_STYLE_SETTINGS_ITEM)),
+                            style: TEXT_STYLE_SETTINGS_TRAILING)),
                   ));
             }),
       ],
@@ -467,24 +466,23 @@ class ShowHideButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        onPressed();
-      },
-      child: ValueListenableBuilder<bool>(
-          valueListenable: notifier,
-          builder: (context, enabled, child) {
-            return SizedBox(
-              width: 70,
-              child: Align(
-                alignment: Alignment.centerRight,
+    return SizedBox(
+      width: 60,
+      child: TextButton(
+        onPressed: () {
+          onPressed();
+        },
+        child: ValueListenableBuilder<bool>(
+            valueListenable: notifier,
+            builder: (context, enabled, child) {
+              return Center(
                 child: Text(
                   enabled ? "●" : "○",
-                  style: TEXT_STYLE_SETTINGS_ITEM,
+                  style: TEXT_STYLE_SETTINGS_TRAILING,
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+      ),
     );
   }
 }

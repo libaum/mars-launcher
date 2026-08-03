@@ -19,6 +19,8 @@ const FONT = "Outfit";
 /// Settings page text styles
 const TEXT_STYLE_SETTINGS_TITLE = TextStyle(fontSize: 30, fontWeight: FontWeight.w300);
 const TEXT_STYLE_SETTINGS_ITEM = TextStyle(fontSize: 19, height: 1, fontWeight: FontWeight.w200);
+/// Second-column value next to a settings row (toggle state, count, etc.)
+const TEXT_STYLE_SETTINGS_TRAILING = TextStyle(fontSize: 16, fontWeight: FontWeight.w300);
 
 /// Named text styles — fontFamily intentionally omitted so they inherit from ThemeData
 const TEXT_STYLE_APP_SMALL = TextStyle(fontSize: 20, fontWeight: FontWeight.w200);

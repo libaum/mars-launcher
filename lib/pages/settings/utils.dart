@@ -28,10 +28,21 @@ class GenericSettingsButton extends StatelessWidget {
             ? Row(
                 children: [
                   Expanded(child: Text(name, style: style)),
-                  Icon(
-                    Icons.chevron_right,
-                    size: 20,
-                    color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
+                  // Compensates the TextButton's own default horizontal
+                  // padding, so the chevron lands flush with the trailing
+                  // value box used by ShowHideButton/numOfShortcutItems.
+                  Transform.translate(
+                    offset: const Offset(12, 0),
+                    child: SizedBox(
+                      width: 60,
+                      child: Center(
+                        child: Icon(
+                          Icons.chevron_right,
+                          size: 20,
+                          color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               )
