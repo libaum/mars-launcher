@@ -76,7 +76,7 @@ class _CreditsState extends State<Credits> with WidgetsBindingObserver {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'I\'ve used it every day since then, gradually adapting it to fit my real life. Over time, it evolved into a fast and focused home screen, where small, thoughtful tools and gesture-based interactions that stay out of the way. The goal was never to add more, but to make using my phone feel simpler.',
+                    'I\'ve used it every day since then, gradually adapting it to fit my real life. Over time, it evolved into a fast and focused home screen, with small, thoughtful tools and gesture-based interactions that stay out of the way. The goal was never to add more, but to make using my phone feel simpler.',
                     style: bodyPrimary,
                   ),
                   const SizedBox(height: 12),
