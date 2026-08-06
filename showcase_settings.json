@@ -1,0 +1,22 @@
+{
+  "calendarApp": "{\"packageName\":\"com.google.android.calendar\",\"appName\":\"Calendar\",\"systemApp\":false,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "batteryApp": "{\"packageName\":\"uninitialized battery app\",\"appName\":\" + \",\"systemApp\":false,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "numOfShortcutItems": 5,
+  "weatherEnabled": true,
+  "swipeRightApp": "{\"packageName\":\"com.google.android.dialer\",\"appName\":\"Phone\",\"systemApp\":true,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "clockApp": "{\"packageName\":\"com.google.android.deskclock\",\"appName\":\"Clock\",\"systemApp\":false,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "weatherActivatedAtLeastOnce": true,
+  "isFirstLaunch": false,
+  "marsAppsUnlocked": true,
+  "swipeLeftApp": "{\"packageName\":\"com.google.android.GoogleCamera\",\"appName\":\"Camera\",\"systemApp\":true,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "appsAreSaved": true,
+  "weatherApp": "{\"packageName\":\"com.google.android.apps.weather\",\"appName\":\"Weather\",\"systemApp\":false,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "shortcut0": "{\"packageName\":\"com.whatsapp\",\"appName\":\"WhatsApp\",\"systemApp\":false,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "shortcut1": "{\"packageName\":\"com.spotify.music\",\"appName\":\"Spotify\",\"systemApp\":false,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "shortcut2": "{\"packageName\":\"com.google.android.apps.maps\",\"appName\":\"Maps\",\"systemApp\":true,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "shortcut3": "{\"packageName\":\"com.android.chrome\",\"appName\":\"Chrome\",\"systemApp\":false,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "shortcut4": "{\"packageName\":\"com.google.android.gm\",\"appName\":\"Gmail\",\"systemApp\":false,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "shortcut5": "{\"packageName\":\"com.google.android.calculator\",\"appName\":\"Calculator\",\"systemApp\":false,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "shortcut6": "{\"packageName\":\"com.google.android.deskclock\",\"appName\":\"Clock\",\"systemApp\":false,\"appIsHidden\":false,\"appDisplayName\":null}",
+  "themeMode": true
+}

@@ -51,6 +51,13 @@ class TemperatureManager {
   }
 
   void updateTemperature() async {
+    if (SHOWCASE_TEMPERATURE != null) {
+      setNewTemperature(SHOWCASE_TEMPERATURE);
+      sunriseSunsetString = "Sunrise: $SHOWCASE_SUNRISE\nSunset:  $SHOWCASE_SUNSET";
+      lastSunriseSunsetUpdate = DateTime.now();
+      return;
+    }
+
     /// Check if weather is enabled
     if (!settingsManager.weatherWidgetEnabledNotifier.value) {
       return couldNotRetrieveNewTemperature("[$runtimeType] weather widget disabled");

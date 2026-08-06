@@ -10,11 +10,25 @@ set -euo pipefail
 #   #importsettings   load settings from the device (then restart the launcher)
 #
 # Usage:
-#   ./settings.sh pull [file]   copy settings off the device (default: mars_settings.json)
-#   ./settings.sh push [file]   copy settings onto the device, ready for #importsettings
+#   ./settings.sh pull [file] [--debug]   copy settings off the device (default: mars_settings.json)
+#   ./settings.sh push [file] [--debug]   copy settings onto the device, ready for #importsettings
+#
+# --debug targets the debug build (com.cloudcatcher.mars_launcher.debug) instead of release.
 cd "$(dirname "$0")"
 
+ARGS=()
+DEBUG=false
+for arg in "$@"; do
+  if [ "$arg" = "--debug" ]; then
+    DEBUG=true
+  else
+    ARGS+=("$arg")
+  fi
+done
+set -- "${ARGS[@]+"${ARGS[@]}"}"
+
 PKG="com.cloudcatcher.mars_launcher"
+$DEBUG && PKG="com.cloudcatcher.mars_launcher.debug"
 REMOTE="/sdcard/Android/data/$PKG/files/mars_settings.json"
 LOCAL="${2:-mars_settings.json}"
 

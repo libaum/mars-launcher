@@ -7,6 +7,7 @@ import 'package:mars_launcher/services/service_locator.dart';
 import 'package:mars_launcher/services/shared_prefs_manager.dart';
 import 'package:mars_launcher/strings.dart';
 import 'package:mars_launcher/constants/method_channels.dart';
+import 'package:mars_launcher/constants/global.dart';
 
 
 class AppsManager {
@@ -190,7 +191,7 @@ class AppsManager {
 
     try {
       List<AppInfo> apps = [];
-      final List<dynamic> applications = await _installedAppsChannel.invokeMethod('getInstalledApps');
+      final List<dynamic> applications = LOAD_APPS_FROM_JSON ? await _loadAppsFromJson() : await _installedAppsChannel.invokeMethod('getInstalledApps');
 
       for (var app in applications) {
         final Map<String, dynamic> appMap = Map<String, dynamic>.from(app);
@@ -214,6 +215,15 @@ class AppsManager {
     } finally {
       syncingNotifier.value = false;
     }
+  }
+
+  /// Debug-only substitute for the native app list, used to showcase the launcher with generic apps (see assets/apps.json -> "apps").
+  Future<List<dynamic>> _loadAppsFromJson() async {
+    final String response = await rootBundle.loadString('assets/apps.json');
+    final appsJson = await json.decode(response);
+    return (appsJson["apps"] as List<dynamic>)
+        .map((app) => {'packageName': app[JsonKeys.packageName], 'appName': app[JsonKeys.appName], 'isSystemApp': 'false'})
+        .toList();
   }
 
   loadRenamedAppsFromSharedPrefs() {

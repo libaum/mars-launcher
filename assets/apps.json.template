@@ -48,5 +48,11 @@
   "contacts": {
     "packageName": "",
     "appName": "contacts"
-  }
+  },
+  "apps": [
+    {
+      "packageName": "",
+      "appName": "select"
+    }
+  ]
 }
