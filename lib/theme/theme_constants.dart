@@ -13,6 +13,24 @@ const COLOR_ACCENT = Color(0xffc9184a);
 const COLOR_ACCENT_HIGHLIGHT = Color(0xffEA4876);
 const COLOR_DIALOG_BUTTONS = Color(0xffFF6F5C);
 
+/// Curated background presets offered alongside the free color picker.
+/// Light presets stay light enough for black text, dark presets stay dark enough for white text.
+/// Picked with clearly noticeable hue/saturation vs. the plain white/black default.
+const List<Color> LIGHT_BACKGROUND_PRESETS = [
+  Color(0xFFF3E4C8), // sand
+  Color(0xFFD9E8DA), // sage
+  Color(0xFFD6E4F0), // powder blue
+  Color(0xFFF0DCE0), // blush
+  Color(0xFFE3DCF0), // lavender
+];
+const List<Color> DARK_BACKGROUND_PRESETS = [
+  Color(0xFF141C29), // navy
+  Color(0xFF13241A), // forest
+  Color(0xFF291319), // wine
+  Color(0xFF231A2C), // plum
+  Color(0xFF241A10), // espresso
+];
+
 /// The one font. Mars is opinionated — no font switching.
 const FONT = "Outfit";
 

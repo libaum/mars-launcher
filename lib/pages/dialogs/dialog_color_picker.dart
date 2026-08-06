@@ -9,12 +9,42 @@ const BUTTON_TEXT_COLOR_DIALOG = Colors.white;
 
 
 
-class ColorPickerDialog extends StatelessWidget {
+class ColorPickerDialog extends StatefulWidget {
   final ColorType colorType;
-  final themeManager = getIt<ThemeManager>();
   final String? title;
 
-  ColorPickerDialog({Key? key, required this.colorType, this.title}) : super(key: key);
+  const ColorPickerDialog({Key? key, required this.colorType, this.title}) : super(key: key);
+
+  @override
+  State<ColorPickerDialog> createState() => _ColorPickerDialogState();
+}
+
+class _ColorPickerDialogState extends State<ColorPickerDialog> {
+  final themeManager = getIt<ThemeManager>();
+
+  late Color selectedColor;
+  late Color defaultColor;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.colorType == ColorType.lightBackground) {
+      selectedColor = themeManager.lightBackground;
+      defaultColor = COLOR_LIGHT_BACKGROUND;
+    } else if (widget.colorType == ColorType.darkBackground) {
+      selectedColor = themeManager.darkBackground;
+      defaultColor = COLOR_DARK_BACKGROUND;
+    } else {
+      selectedColor = themeManager.searchTextColor;
+      defaultColor = COLOR_ACCENT;
+    }
+  }
+
+  List<Color> get _presets {
+    if (widget.colorType == ColorType.lightBackground) return LIGHT_BACKGROUND_PRESETS;
+    if (widget.colorType == ColorType.darkBackground) return DARK_BACKGROUND_PRESETS;
+    return const [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,23 +52,11 @@ class ColorPickerDialog extends StatelessWidget {
 
     final buttonStyle = getDialogButtonStyle(themeManager.isDarkMode);
     final resetButtonStyle = getDialogButtonStyle(themeManager.isDarkMode, isDestructive: true);
-
-    late Color selectedColor;
-    late Color defaultColor;
-    if (colorType == ColorType.lightBackground) {
-      selectedColor = themeManager.lightBackground;
-      defaultColor = COLOR_LIGHT_BACKGROUND;
-    } else if (colorType == ColorType.darkBackground) {
-      selectedColor = themeManager.darkBackground;
-      defaultColor = COLOR_DARK_BACKGROUND;
-    } else {
-      selectedColor = themeManager.searchTextColor;
-      defaultColor = COLOR_ACCENT;
-    }
+    final presets = _presets;
 
     return AlertDialog(
       title: Text(
-        title ?? 'Background color',
+        widget.title ?? 'Background color',
         style: TEXT_STYLE_DIALOG_TITLE,
         // textAlign: TextAlign.center,
       ),
@@ -47,10 +65,34 @@ class ColorPickerDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            if (presets.isNotEmpty) ...[
+              Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: presets.map((color) => GestureDetector(
+                  onTap: () => setState(() => selectedColor = color),
+                  child: Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: selectedColor == color ? COLOR_ACCENT : Colors.grey,
+                        width: selectedColor == color ? 2.5 : 1,
+                      ),
+                    ),
+                  ),
+                )).toList(),
+              ),
+              const SizedBox(height: 16),
+              Text('Custom', style: TEXT_STYLE_DIALOG_BODY),
+              const SizedBox(height: 8),
+            ],
             ColorPicker(
               pickerColor: selectedColor,
               onColorChanged: (Color color) {
-                selectedColor = color;
+                setState(() => selectedColor = color);
               },
               labelTypes: [],
               enableAlpha: false,
@@ -61,7 +103,7 @@ class ColorPickerDialog extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () {
-                    themeManager.setColor(colorType, defaultColor);
+                    themeManager.setColor(widget.colorType, defaultColor);
                     Navigator.of(context).pop();
                   },
                   style: resetButtonStyle,
@@ -69,7 +111,7 @@ class ColorPickerDialog extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    themeManager.setColor(colorType, selectedColor);
+                    themeManager.setColor(widget.colorType, selectedColor);
                     Navigator.of(context).pop();
                   },
                   style: buttonStyle,
