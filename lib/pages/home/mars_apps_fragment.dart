@@ -50,19 +50,31 @@ class MarsAppsFragment extends StatelessWidget {
               final installedPackages =
                   installedApps.map((app) => app.packageName).toSet();
               final unlocked = settingsManager.marsAppsUnlockedNotifier.value;
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (final app in visibleMarsApps(unlocked))
-                    if (enabled.contains(app.packageName))
-                      _MarsAppCard(
-                        app: app,
-                        installed: installedPackages.contains(app.packageName),
-                        primaryColor: primary,
-                        onTap: _handleTap,
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
                       ),
-                ],
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (final app in visibleMarsApps(unlocked))
+                            if (enabled.contains(app.packageName))
+                              _MarsAppCard(
+                                app: app,
+                                installed: installedPackages
+                                    .contains(app.packageName),
+                                primaryColor: primary,
+                                onTap: _handleTap,
+                              ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               );
             },
           );
