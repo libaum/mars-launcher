@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"/>
     <uses-permission
@@ -8,20 +9,26 @@
     <uses-permission
         android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
     <uses-permission
-        android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission
         android:name="android.permission.INTERNET"/>
+    <!-- The `location` plugin declares these unconditionally for its
+         continuous background-tracking feature, which we never use: we
+         only ever do a single foreground getLocation() call. Stripping them
+         avoids the Play Console foreground-service-permission declaration
+         requirement for a capability the app doesn't actually have. -->
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE"
+        tools:node="remove"/>
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE_LOCATION"
+        tools:node="remove"/>
     <application
         android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true">
-        <service
-            android:name="MyNavigationService"
-            android:foregroundServiceType="location"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
