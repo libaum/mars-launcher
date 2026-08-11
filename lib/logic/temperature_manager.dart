@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:mars_launcher/constants/global.dart';
+import 'package:mars_launcher/logic/apps_manager.dart';
 import 'package:mars_launcher/logic/settings_manager.dart';
 import 'package:mars_launcher/logic/shortcut_manager.dart';
 import 'package:mars_launcher/services/location_service.dart';
@@ -23,6 +25,7 @@ class TemperatureManager {
   final permissionService = getIt<PermissionService>();
   final settingsManager = getIt<SettingsManager>();
   final themeManager = getIt<ThemeManager>();
+  final appsManager = getIt<AppsManager>();
 
   final weatherApi = WeatherApi(temperatureUnit: TemperatureUnit.celsius);
   Timer? timer;
@@ -45,12 +48,16 @@ class TemperatureManager {
 
     settingsManager.weatherWidgetEnabledNotifier.addListener(() {
       if (settingsManager.weatherWidgetEnabledNotifier.value) {
-        updateTemperature();
+        updateTemperature(userInitiated: true);
       }
     });
   }
 
-  void updateTemperature() async {
+  /// [userInitiated] marks calls that follow the user just flipping the
+  /// weather toggle in Settings, as opposed to the periodic background
+  /// refresh -- only then do we nudge towards the app's settings on a
+  /// permanent permission denial, so we don't spam that every 5 minutes.
+  void updateTemperature({bool userInitiated = false}) async {
     if (SHOWCASE_TEMPERATURE != null) {
       setNewTemperature(SHOWCASE_TEMPERATURE);
       sunriseSunsetString = "Sunrise: $SHOWCASE_SUNRISE\nSunset:  $SHOWCASE_SUNSET";
@@ -63,8 +70,16 @@ class TemperatureManager {
       return couldNotRetrieveNewTemperature("[$runtimeType] weather widget disabled");
     }
 
-    /// Check if permission for location is granted
-    if (!await locationService.checkPermission()) {
+    /// Check if permission for location is granted. Requesting it can pop up
+    /// a system dialog, which briefly sends the app to the background --
+    /// suppress the usual "app left -> reset to home" handling for that.
+    appsManager.suppressLifecycleReset = true;
+    final hasPermission = await locationService.checkPermission();
+    if (!hasPermission) {
+      if (userInitiated && locationService.isPermanentlyDenied) {
+        Fluttertoast.showToast(msg: "Location permission needed — opening app settings");
+        await appsManager.openAppSettings(PACKAGE_NAME);
+      }
       return couldNotRetrieveNewTemperature("[$runtimeType] no permission for location.");
     }
 

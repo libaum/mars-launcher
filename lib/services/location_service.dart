@@ -5,6 +5,11 @@ class LocationService {
   final location = new Location();
   LocationData? locationData;
 
+  /// Set by [checkPermission]. True once the user has permanently denied
+  /// location access ("don't ask again") -- Android won't show the system
+  /// dialog again after that, so the only way forward is the app's settings.
+  bool isPermanentlyDenied = false;
+
   Future<bool> isServiceEnabled() async {
     try {
       return await location.serviceEnabled();
@@ -14,6 +19,7 @@ class LocationService {
   }
 
   Future<bool> checkPermission() async {
+    isPermanentlyDenied = false;
     bool serviceEnabled = await isServiceEnabled();
 
     if (!serviceEnabled && !await location.requestService()) {
@@ -25,16 +31,15 @@ class LocationService {
     PermissionStatus permissionStatus = await location.hasPermission();
 
     if (permissionStatus == PermissionStatus.denied) {
-      /// Request location permission if not granted
+      /// Request location permission if not granted. No-op if the user
+      /// already denied it permanently (deniedForever) -- Android won't show
+      /// the dialog again in that case, so this just returns deniedForever.
       permissionStatus = await location.requestPermission();
-      if (permissionStatus != PermissionStatus.granted) {
-        /// User denied location permission
-        return false;
-      }
     }
 
-    /// Location services are enabled, and permission is granted
-    return true;
+    isPermanentlyDenied = permissionStatus == PermissionStatus.deniedForever;
+    return permissionStatus == PermissionStatus.granted ||
+        permissionStatus == PermissionStatus.grantedLimited;
   }
 
   updateLocation() async {
