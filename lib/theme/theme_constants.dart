@@ -25,10 +25,10 @@ const List<Color> LIGHT_BACKGROUND_PRESETS = [
 ];
 const List<Color> DARK_BACKGROUND_PRESETS = [
   Color(0xFF141C29), // navy
-  Color(0xFF13241A), // forest
-  Color(0xFF291319), // wine
   Color(0xFF231A2C), // plum
-  Color(0xFF241A10), // espresso
+  Color(0xFF0F2429), // teal
+  Color(0xFF2A121B), // burgundy
+  Color(0xFF291712), // rust
 ];
 
 /// The one font. Mars is opinionated — no font switching.
