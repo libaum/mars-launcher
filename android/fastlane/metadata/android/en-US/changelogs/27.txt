@@ -1,0 +1,7 @@
+- New app icon and splash screen
+- New color presets in Settings > Colors
+- Redesigned Settings page for better readability
+- Status bar is now fully hidden for a cleaner look
+- Fixed sunrise/sunset not showing when weather permission was denied
+- Fixed Mars apps list overflowing on some screens
+- Minor bug fixes and polish
