@@ -5,6 +5,9 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Bundle
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.plugin.common.MethodChannel
 
@@ -17,6 +20,11 @@ class MainActivity : FlutterActivity() {
     private val CHANNEL_INSTALLED_APPS = "com.cloudcatcher.mars_launcher/installed_apps"
     private val CHANNEL_LAUNCH_APP = "com.cloudcatcher.mars_launcher/launch_app"
     private val CHANNEL_OPEN_APP_SETTINGS = "com.cloudcatcher.mars_launcher/open_app_settings"
+    private val CHANNEL_STATUS_BAR = "com.cloudcatcher.mars_launcher/status_bar"
+
+    // Fully hidden by default (clean look for all accent colors); Dart syncs
+    // this to the persisted setting right after startup via CHANNEL_STATUS_BAR.
+    private var statusBarHidden = true
 
     /**
      * Called when the activity is starting. Sets up method channels for Flutter communication.
@@ -24,6 +32,8 @@ class MainActivity : FlutterActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        applyStatusBarVisibility()
 
         val messenger = flutterEngine?.dartExecutor?.binaryMessenger ?: return
 
@@ -103,6 +113,53 @@ class MainActivity : FlutterActivity() {
                 }
                 else -> result.notImplemented()
             }
+        }
+
+        // MethodChannel for switching between fully hiding the status bar and
+        // just letting Flutter color-blend it (see SettingsManager in Dart)
+        MethodChannel(messenger, CHANNEL_STATUS_BAR).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "setHidden" -> {
+                    statusBarHidden = call.arguments as? Boolean ?: true
+                    applyStatusBarVisibility()
+                    result.success(null)
+                }
+                else -> result.notImplemented()
+            }
+        }
+    }
+
+    /**
+     * Re-applies the current status bar visibility whenever the window
+     * regains focus (e.g. returning from Recents), so a hidden bar never
+     * stays revealed after a resume.
+     */
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            applyStatusBarVisibility()
+        }
+    }
+
+    /**
+     * Hides or shows the status bar only (nav bar untouched), no
+     * immersive/fullscreen mode. While hidden, swiping from the top reveals
+     * it transiently (system takes the first swipe, a second one is needed
+     * to actually pull the notification shade down).
+     *
+     * Edge-to-edge (decorFitsSystemWindows = false) stays on regardless of
+     * mode -- that's what lets Flutter draw its own background color behind
+     * the status bar for the blend mode. Toggling it off here would break
+     * that rendering and the app's own inset handling.
+     */
+    private fun applyStatusBarVisibility() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        if (statusBarHidden) {
+            controller.hide(WindowInsetsCompat.Type.statusBars())
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        } else {
+            controller.show(WindowInsetsCompat.Type.statusBars())
         }
     }
 

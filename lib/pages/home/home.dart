@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mars_launcher/logic/app_search_manager.dart';
 import 'package:mars_launcher/logic/apps_manager.dart';
+import 'package:mars_launcher/logic/settings_manager.dart';
 import 'package:mars_launcher/logic/shortcut_manager.dart';
 import 'package:mars_launcher/logic/temperature_manager.dart';
 import 'package:mars_launcher/pages/home/app_shortcuts_fragment.dart';
@@ -41,6 +42,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with WidgetsBindingObserver {
   final themeManager = getIt<ThemeManager>();
+  final settingsManager = getIt<SettingsManager>();
   final appShortcutsManager = getIt<AppShortcutsManager>();
   final temperatureManager = getIt<TemperatureManager>();
   final appsManager = getIt<AppsManager>();
@@ -262,7 +264,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
   void _verticalDragStartHandler(BuildContext context, DragStartDetails details) {
     _verticalDragConsumed = false; /// One view transition per drag gesture
-    _allowVerticalDrag = _isDragStartAboveSystemGestureArea(context, details.globalPosition.dy);
+    _allowVerticalDrag = _isDragStartAboveSystemGestureArea(context, details.globalPosition.dy) &&
+        _isDragStartBelowStatusBar(context, details.globalPosition.dy);
   }
 
   void _resetVerticalDragGate() {
@@ -275,5 +278,18 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     final screenHeight = mediaQuery.size.height;
     final bottomEdgeLimit = screenHeight - (bottomInset + BOTTOM_GESTURE_DEAD_ZONE);
     return globalDy < bottomEdgeLimit;
+  }
+
+  /// While the status bar is fully hidden natively, the top edge is the
+  /// system's own reveal-gesture area — leave it to the OS instead of also
+  /// reacting to it here, or a swipe that narrowly misses the status bar
+  /// would trigger the Mars apps view too. A generous top-eighth dead zone
+  /// (rather than just the status bar's own height) makes this reliable.
+  bool _isDragStartBelowStatusBar(BuildContext context, double globalDy) {
+    if (!settingsManager.statusBarFullyHiddenNotifier.value) {
+      return true;
+    }
+    final topEdgeLimit = MediaQuery.of(context).size.height / 8;
+    return globalDy > topEdgeLimit;
   }
 }

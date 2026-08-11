@@ -153,6 +153,13 @@ class AppSearchManager {
     if (appSearchMode == AppSearchMode.openApp &&
         settingsManager.marsAppsUnlockedNotifier.value) {
       final code = searchValue.trim().toLowerCase();
+      if (code == statusBarBlendModeCode) {
+        settingsManager.toggleStatusBarFullyHidden();
+        final mode = settingsManager.statusBarFullyHiddenNotifier.value ? "hidden" : "blend";
+        _adminToast(context, "status bar mode: $mode");
+        filteredAppsNotifier.value = [];
+        return;
+      }
       if (code == exportSettingsCode || code == importSettingsCode) {
         final path = code == exportSettingsCode
             ? await exportSettings()

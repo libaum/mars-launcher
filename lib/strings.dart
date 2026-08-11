@@ -89,6 +89,7 @@ class Keys {
   static const weatherActivatedAtLeastOnce = "weatherActivatedAtLeastOnce";
   static const keyboardAutofocusEnabled = "keyboard_autofocus_enabled";
   static const isFirstLaunch = "isFirstLaunch";
+  static const statusBarFullyHidden = "statusBarFullyHidden";
 }
 
 class JsonKeys {

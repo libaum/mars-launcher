@@ -7,6 +7,12 @@
 /// accident. Change it to your own secret before a public release.
 const marsAppsUnlockCode = "#unlockallmarsapps";
 
+/// Same exact-match rule, gated behind [marsAppsUnlockCode]. Switches the
+/// status bar from fully hidden (default) to the old color-blend behavior —
+/// single-swipe notification pull, but icons stay faintly visible on custom
+/// accent colors. See [SettingsManager.statusBarFullyHiddenNotifier].
+const statusBarBlendModeCode = "#classicstatusbar";
+
 class MarsApp {
   final String name;
   final String packageName;

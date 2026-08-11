@@ -9,6 +9,7 @@ import 'package:mars_launcher/constants/method_channels.dart';
 
 class SettingsManager {
   static const MethodChannel _openDefaultLauncherSettingsChannel = MethodChannel(MethodChannels.openDefaultLauncherSettings);
+  static const MethodChannel _statusBarChannel = MethodChannel(MethodChannels.statusBar);
 
   final sharedPrefsManager = getIt<SharedPrefsManager>();
 
@@ -26,6 +27,12 @@ class SettingsManager {
   /// Whether the private Mars apps have been revealed via the unlock code.
   late final ValueNotifierWithKey<bool> marsAppsUnlockedNotifier;
 
+  /// Whether the status bar is fully hidden natively (default) rather than
+  /// just color-blended. Fully hidden requires two swipes to pull the
+  /// notification shade (system reveal, then drag) — toggled via
+  /// [statusBarBlendModeCode].
+  late final ValueNotifierWithKey<bool> statusBarFullyHiddenNotifier;
+
   late bool isFirstStartup;
 
   SettingsManager() {
@@ -41,6 +48,9 @@ class SettingsManager {
         Keys.enabledMarsApps);
     marsAppsUnlockedNotifier = ValueNotifierWithKey<bool>(
         sharedPrefsManager.readData(Keys.marsAppsUnlocked) ?? false, Keys.marsAppsUnlocked);
+    statusBarFullyHiddenNotifier = ValueNotifierWithKey<bool>(
+        sharedPrefsManager.readData(Keys.statusBarFullyHidden) ?? true, Keys.statusBarFullyHidden);
+    _applyStatusBarVisibility();
 
     isFirstStartup = sharedPrefsManager.readData(Keys.isFirstStartup) ?? true;
 
@@ -73,6 +83,18 @@ class SettingsManager {
     if (marsAppsUnlockedNotifier.value) return;
     marsAppsUnlockedNotifier.value = true;
     sharedPrefsManager.saveData(Keys.marsAppsUnlocked, true);
+  }
+
+  /// Toggles between fully hiding the status bar (default) and the old
+  /// color-blend behavior. Called from [statusBarBlendModeCode].
+  void toggleStatusBarFullyHidden() {
+    statusBarFullyHiddenNotifier.value = !statusBarFullyHiddenNotifier.value;
+    sharedPrefsManager.saveData(Keys.statusBarFullyHidden, statusBarFullyHiddenNotifier.value);
+    _applyStatusBarVisibility();
+  }
+
+  void _applyStatusBarVisibility() {
+    _statusBarChannel.invokeMethod('setHidden', statusBarFullyHiddenNotifier.value);
   }
 
   /// Show/hide a Mars app in the swipe-down overview.

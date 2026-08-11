@@ -60,19 +60,23 @@ class ThemeManager {
   }
 
   get systemUiOverlayStyle {
-    /// If background color is changed (!= white or black) -> it is not possible to adjust status bar color to background color -> therefore use normal contrast in that case
-    final statusBarIconBrightnessDark = darkBackground == COLOR_DARK_BACKGROUND ? Brightness.dark : Brightness.light;
-    final statusBarIconBrightnessLight = lightBackground == COLOR_LIGHT_BACKGROUND ? Brightness.light : Brightness.dark;
+    /// Status bar icons are binary (light or dark) on Android. To hide them,
+    /// pick the icon tone that matches the background's own tone (dark icons
+    /// on a dark background, light icons on a light one) so they blend in,
+    /// based on the actual color's luminance instead of only matching the
+    /// exact black/white defaults.
+    final activeBackground = isDarkMode ? darkBackground : lightBackground;
+    final statusBarIconBrightness = ThemeData.estimateBrightnessForColor(activeBackground);
     final systemUiOverlayStyle = isDarkMode ?
       lightSystemUiOverlayStyle.copyWith(
           systemNavigationBarColor: darkBackground,
           statusBarColor: darkBackground,
-          statusBarIconBrightness: statusBarIconBrightnessDark
+          statusBarIconBrightness: statusBarIconBrightness
       ) :
       darkSystemUiOverlayStyle.copyWith(
           systemNavigationBarColor: lightBackground,
           statusBarColor: lightBackground,
-          statusBarIconBrightness: statusBarIconBrightnessLight
+          statusBarIconBrightness: statusBarIconBrightness
       );
 
     return systemUiOverlayStyle;
