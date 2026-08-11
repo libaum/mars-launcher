@@ -81,7 +81,7 @@ class _CreditsState extends State<Credits> with WidgetsBindingObserver {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'What started as a personal tool became the phone experience I wanted to share with others. Since it will always be free, perhaps it can make your phone feel a little calmer and more intentional too. :)',
+                    'What started as a personal tool became the phone experience I wanted to share with others. Perhaps it can make your phone feel a little calmer and more intentional too. :)',
                     style: bodyPrimary,
                   ),
 
@@ -118,7 +118,7 @@ class _CreditsState extends State<Credits> with WidgetsBindingObserver {
 
                   // About Mars — shared philosophy, grayed, identical across all apps.
                   Text(
-                    'Mars — Minimalist And Really Simple. A growing family of small, calm tools built around one idea: solve one problem well, and never fight for your attention. Created by one person out of passion and conviction. Forever open source. No ads. No tracking.',
+                    'Mars — Minimalist And Really Simple. A growing family of small, calm tools built around one idea: solve one problem well, and never fight for your attention. No ads, no tracking, nothing built to keep you hooked. Made by one person, out of conviction — tools that work for you, not on you.',
                     style: bodySecondary,
                   ),
                   const SizedBox(height: 30),
