@@ -70,6 +70,15 @@ class TemperatureManager {
       return couldNotRetrieveNewTemperature("[$runtimeType] weather widget disabled");
     }
 
+    /// Requesting location permission needs a foreground Activity -- if the
+    /// app is backgrounded (e.g. periodic timer firing while another app is
+    /// open), location.requestPermission() throws MISSING_ACTIVITY. Skip
+    /// the update in that case; it'll retry on the next timer tick or when
+    /// the user reopens the app.
+    if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed) {
+      return couldNotRetrieveNewTemperature("[$runtimeType] app not in foreground, skipping");
+    }
+
     /// Check if permission for location is granted. Requesting it can pop up
     /// a system dialog, which briefly sends the app to the background --
     /// suppress the usual "app left -> reset to home" handling for that.
