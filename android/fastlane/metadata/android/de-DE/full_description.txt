@@ -1,18 +1,12 @@
-Ich habe Mars Launcher entwickelt, weil ich mein eigenes Smartphone einfach nicht mehr ertragen konnte.
-Zu viele Icons. Zu viel Farbe. Zu viele Dinge, die nur darauf ausgelegt sind, einen abhängig zu machen. Der Mars Launcher ist mein Versuch, das zu ändern – ein minimalistischer, textbasierter Homescreen, der dein Handy wieder in ein Werkzeug verwandelt, statt in eine Falle.
+Ein minimalistischer Launcher, der deinen Homescreen ruhig und schnell macht. Kein Icon-Raster, in dem man sich verliert, kein Lärm, der dich ablenkt. Nur die wenigen Dinge, die du wirklich brauchst, ein paar schnelle Gesten entfernt.
 
-<b>🚀 NAVIGATION</b>
-Nach oben wischen, tippen, fertig. Der Mars Launcher öffnet deine App in dem Moment, in dem das Suchergebnis eindeutig ist – kein extra Tippen nötig. Sieben Shortcuts für deine meistgenutzten Apps, Wischen nach links oder rechts für sofortige eigene Kürzel. Ein langer Druck auf die freie Fläche führt dich zu den Einstellungen.
+- Nach oben wischen und tippen: öffnet die App, sobald deine Eingabe eindeutig ist, ganz ohne extra Antippen
+- Textbasierte Shortcuts: antippen öffnet, gedrückt halten weist neu zu, bis zu sieben Apps
+- Wische nach links oder rechts für zwei weitere Shortcuts, sofort griffbereit
+- Uhrzeit, Wetter, Kalender und Akku auf einen Blick. Gedrückt halten zeigt mehr: bei der Uhr einen Wecker, beim Kalender eine To-Do-Liste, beim Wetter Sonnenauf- und -untergang.
+- Dark- und Light-Mode, Farben nach deinem Geschmack
+- Keine Werbung, kein Tracking, keine Datensammlung. Nie.
 
-<b>VERSTECKTE FEATURES</b>
-Ein paar Dinge, die ich still und leise eingebaut habe – für alle, die gerne auf Entdeckungstour gehen. Halte die Uhrzeit gedrückt für einen schnellen Wecker, das Datum für eine minimalistische To-Do-Liste und das Wetter-Widget für die lokalen Sonnenauf- und -untergangszeiten.
+Ich habe den Launcher gebaut, der mir gefehlt hat. Auf ein Dumbphone umzusteigen kam für mich nicht infrage, aber mein Handy sollte sich so anfühlen. Ich nutze ihn seitdem jeden Tag und habe ihn nach und nach an mein echtes Leben angepasst. Ein Wisch nach unten zeigt dir auch den Rest der Mars-Familie, dieselbe Idee, ein Tool nach dem anderen, nur einen Wisch entfernt.
 
-<b>LOOK &amp; FEEL</b>
-Ein Doppeltipp auf die freie Fläche wechselt zwischen Dark und Light Mode. Tiefschwarzer Hintergrund – schont die Augen und den Akku. Farben, Schriftarten und die UI lassen sich ganz nach deinem Geschmack anpassen.
-
-<b>WAS MARS NIEMALS HABEN WIRD</b>
-Keine Werbung. Kein Tracking. Kein Abo. Kein Bullshit.
-
-Mars Launcher ist ein kleines Indie-Projekt – Open-Source, für immer kostenlos und mit der Überzeugung entwickelt, dass deine Aufmerksamkeit geschützt werden muss.
-
-<i>PS: Mars steht für Minimalistic And Really Simple :)</i>
+Mars — Minimalist And Really Simple. Eine wachsende Familie kleiner, ruhiger Tools nach einer Idee: ein Problem gut lösen und nie um deine Aufmerksamkeit kämpfen. Keine Werbung, kein Tracking, nichts, das dich fesseln soll. Von einer Person gemacht, aus Überzeugung — Werkzeuge, die für dich arbeiten, nicht gegen dich.

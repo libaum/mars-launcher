@@ -1,1 +1,1 @@
-Escape noise. A text-based launcher with no icons, no clutter, no bullshit.
+A calm, fast home screen that stays out of your way.

@@ -1,18 +1,12 @@
-I built Mars Launcher because I couldn't stand my own phone anymore.
-Too many icons. Too much color. Too many things designed to pull me back in. Mars Launcher is my attempt to fix that — a minimal, text-based home screen that turns your phone into a tool instead of a trap.
+A minimalist launcher that makes your home screen calm and fast. No icon grid to get lost in, no noise competing for your attention. Just the few things you actually use, reached through quick gestures.
 
-<b>🚀 CORE NAVIGATION</b>
-Swipe up, type, done. Mars Launcher opens your app the moment the result is unique — no extra tap needed. Seven shortcuts for your daily drivers, swipe left or right for instant custom shortcuts. Long-press the empty space for settings.
+- Swipe up and type: opens the app the moment your search is unique, no extra tap
+- Text-based shortcuts: tap to open, hold to reassign, up to seven apps
+- Swipe left or right for two more instant shortcuts
+- Clock, weather, calendar and battery at a glance. Hold the clock for a quick alarm, the calendar for a to-do list, the weather for sunrise and sunset.
+- Dark and light mode, colors to your taste
+- No ads, no tracking, no data collection. None, ever.
 
-<b>HIDDEN TOOLS</b>
-A few things I added quietly, for the people who actually explore. Long-press the clock for a quick alarm, the date for a minimal to-do list, the weather widget for local sunrise and sunset times.
+I built the launcher I was missing. I couldn't switch to a dumb phone, but I wanted mine to feel that way. I've used it every day since, gradually shaping it to fit real life. Swipe down and you'll find the rest of the Mars family too, the same idea, one tool at a time, one swipe away.
 
-<b>LOOKS &amp; FEEL</b>
-Double-tap the empty space to switch between dark and light mode. Pure black background, easy on the eyes and the battery. Colors, fonts and UI adjustable to your taste.
-
-<b>WHAT MARS WILL NEVER HAVE</b>
-No ads. No tracking. No subscription. No bullshit.
-
-Mars Launcher is a small indie project — open-source, free forever, and built with the belief that your attention is worth protecting.
-
-<i>PS: Mars stands for Minimalistic and Really Simple :)</i>
+Mars — Minimalist And Really Simple. A growing family of small, calm tools built around one idea: solve one problem well, and never fight for your attention. No ads, no tracking, nothing built to keep you hooked. Made by one person, out of conviction — tools that work for you, not on you.
