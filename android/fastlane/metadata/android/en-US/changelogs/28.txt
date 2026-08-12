@@ -1,0 +1,1 @@
+- Fixed a crash that could happen when the weather widget updated while the app was in the background
