@@ -10,7 +10,8 @@ import 'package:mars_launcher/theme/theme_constants.dart';
 enum ColorType {
   lightBackground,
   darkBackground,
-  searchTextColor
+  lightSearchTextColor,
+  darkSearchTextColor,
 }
 
 class ThemeManager {
@@ -20,7 +21,8 @@ class ThemeManager {
 
   late Color lightBackground;
   late Color darkBackground;
-  late Color searchTextColor;
+  late Color lightSearchTextColor;
+  late Color darkSearchTextColor;
 
   ThemeManager() {
     themeModeNotifier = ThemeModeNotifier<ThemeMode>(
@@ -28,12 +30,16 @@ class ThemeManager {
     );
     lightBackground = Color(sharedPrefsManager.readData(Keys.lightBackground) ?? Colors.white.value);
     darkBackground = Color(sharedPrefsManager.readData(Keys.darkBackground) ?? Colors.black.value);
-    searchTextColor = Color(sharedPrefsManager.readData(Keys.searchColor) ?? COLOR_ACCENT.value);
+    lightSearchTextColor = Color(sharedPrefsManager.readData(Keys.lightSearchColor) ?? COLOR_ACCENT.value);
+    darkSearchTextColor = Color(sharedPrefsManager.readData(Keys.darkSearchColor) ?? COLOR_ACCENT.value);
   }
 
   bool get isDarkMode {
     return themeModeNotifier.value == ThemeMode.dark;
   }
+
+  /// The search text color for whichever theme is currently active.
+  Color get searchTextColor => isDarkMode ? darkSearchTextColor : lightSearchTextColor;
 
   ThemeData get lightTheme {
     return buildLightTheme().copyWith(
@@ -41,7 +47,7 @@ class ThemeManager {
       colorScheme: ColorScheme.light(
         surface: lightBackground,
         primary: COLOR_LIGHT_PRIMARY,
-        secondary: searchTextColor,
+        secondary: lightSearchTextColor,
         brightness: Brightness.light,
       ),
     );
@@ -53,7 +59,7 @@ class ThemeManager {
       colorScheme: ColorScheme.light(
         surface: darkBackground,
         primary: COLOR_DARK_PRIMARY,
-        secondary: searchTextColor,
+        secondary: darkSearchTextColor,
         brightness: Brightness.dark,
       ),
     );
@@ -93,15 +99,23 @@ class ThemeManager {
   }
 
   void setColor(ColorType colorType, Color color) {
-    if (colorType == ColorType.darkBackground) {
-      darkBackground = color;
-      sharedPrefsManager.saveData(Keys.darkBackground, color.value);
-    } else if (colorType == ColorType.lightBackground) {
-      lightBackground = color;
-      sharedPrefsManager.saveData(Keys.lightBackground, color.value);
-    } else {
-      searchTextColor = color;
-      sharedPrefsManager.saveData(Keys.searchColor, color.value);
+    switch (colorType) {
+      case ColorType.darkBackground:
+        darkBackground = color;
+        sharedPrefsManager.saveData(Keys.darkBackground, color.value);
+        break;
+      case ColorType.lightBackground:
+        lightBackground = color;
+        sharedPrefsManager.saveData(Keys.lightBackground, color.value);
+        break;
+      case ColorType.lightSearchTextColor:
+        lightSearchTextColor = color;
+        sharedPrefsManager.saveData(Keys.lightSearchColor, color.value);
+        break;
+      case ColorType.darkSearchTextColor:
+        darkSearchTextColor = color;
+        sharedPrefsManager.saveData(Keys.darkSearchColor, color.value);
+        break;
     }
     themeModeNotifier.notify();
   }

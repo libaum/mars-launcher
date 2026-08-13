@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mars_launcher/pages/dialogs/dialog_color_picker.dart';
+import 'package:mars_launcher/pages/dialogs/background_color_dialog.dart';
+import 'package:mars_launcher/pages/dialogs/search_color_dialog.dart';
 import 'package:mars_launcher/pages/settings/utils.dart';
 import 'package:mars_launcher/theme/theme_constants.dart';
 import 'package:mars_launcher/theme/theme_manager.dart';
@@ -61,29 +62,22 @@ class _SettingsColorsState extends State<SettingsColors> with WidgetsBindingObse
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          /// LIGHT COLOR / DARK COLOR
-                          GenericSettingsButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return ColorPickerDialog(colorType: ColorType.lightBackground);
+                          /// BACKGROUND COLOR
+                          ValueListenableBuilder<ThemeMode>(
+                            valueListenable: themeManager.themeModeNotifier,
+                            builder: (context, themeMode, child) {
+                              return GenericSettingsButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BackgroundColorDialog(isDark: themeManager.isDarkMode);
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                              name: Strings.settingsColorsLightBackground
-                          ),
-
-                          GenericSettingsButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return ColorPickerDialog(colorType: ColorType.darkBackground);
-                                  },
-                                );
-                              },
-                              name: Strings.settingsColorsDarkBackground
+                                  name: Strings.settingsColorsBackground
+                              );
+                            }
                           ),
 
                           ValueListenableBuilder<ThemeMode>(
@@ -94,7 +88,7 @@ class _SettingsColorsState extends State<SettingsColors> with WidgetsBindingObse
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return ColorPickerDialog(colorType: ColorType.searchTextColor);
+                                        return SearchColorDialog(isDark: themeManager.isDarkMode);
                                       },
                                     );
                                   },

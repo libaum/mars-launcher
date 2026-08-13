@@ -25,8 +25,7 @@ class Strings {
   static const cheatSheetTitle = "Cheat Sheet";
   static const settingsColorsTitle = "Colors";
   static const settingsColorsSearchColor = "Search color";
-  static const settingsColorsLightBackground = "Light background";
-  static const settingsColorsDarkBackground = "Dark background";
+  static const settingsColorsBackground = "Background color";
 
   /// Standard names
   static const defaultTemperatureString = "-°C";
@@ -84,7 +83,8 @@ class Keys {
   static const typeAppSwipeRight = "swipeRightApp";
   static const themeMode = "themeMode";
   static const lightBackground = "light_background";
-  static const searchColor = "search_color";
+  static const lightSearchColor = "light_search_color";
+  static const darkSearchColor = "dark_search_color";
   static const darkBackground = "dark_background";
   static const weatherActivatedAtLeastOnce = "weatherActivatedAtLeastOnce";
   static const keyboardAutofocusEnabled = "keyboard_autofocus_enabled";

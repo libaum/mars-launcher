@@ -24,11 +24,22 @@ const List<Color> LIGHT_BACKGROUND_PRESETS = [
   Color(0xFFE3DCF0), // lavender
 ];
 const List<Color> DARK_BACKGROUND_PRESETS = [
-  Color(0xFF141C29), // navy
-  Color(0xFF231A2C), // plum
-  Color(0xFF0F2429), // teal
-  Color(0xFF2A121B), // burgundy
-  Color(0xFF291712), // rust
+  Color(0xFF1C2740), // navy
+  Color(0xFF32243D), // plum
+  Color(0xFF17383D), // teal
+  Color(0xFF3D1B29), // burgundy
+  Color(0xFF3A2117), // rust
+];
+
+/// Search/accent text color presets. Sit on top of the fixed black dialog
+/// (and, live, on top of the app's own background), so kept at a medium
+/// lightness/saturation that stays legible on both black and white.
+const List<Color> SEARCH_COLOR_PRESETS = [
+  Color(0xFFC9184A), // rose (default accent)
+  Color(0xFF3E6E96), // steel blue
+  Color(0xFF1F7A72), // teal
+  Color(0xFF6B5B95), // lavender
+  Color(0xFFD4711F), // mango
 ];
 
 /// The one font. Mars is opinionated — no font switching.

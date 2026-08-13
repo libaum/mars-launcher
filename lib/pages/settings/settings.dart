@@ -5,7 +5,8 @@ import 'package:mars_launcher/logic/app_search_manager.dart';
 import 'package:mars_launcher/logic/settings_manager.dart';
 import 'package:mars_launcher/logic/shortcut_manager.dart';
 import 'package:mars_launcher/pages/settings/about.dart';
-import 'package:mars_launcher/pages/dialogs/dialog_color_picker.dart';
+import 'package:mars_launcher/pages/dialogs/background_color_dialog.dart';
+import 'package:mars_launcher/pages/dialogs/search_color_dialog.dart';
 
 import 'package:mars_launcher/pages/settings/cheat_sheet.dart';
 import 'package:mars_launcher/services/location_service.dart';
@@ -190,28 +191,21 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
                             /// ---- Appearance ----
                             _sectionHeader(context, Strings.settingsGroupAppearance),
 
-                            GenericSettingsButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ColorPickerDialog(colorType: ColorType.lightBackground, title: 'Light background');
+                            ValueListenableBuilder<ThemeMode>(
+                                valueListenable: themeManager.themeModeNotifier,
+                                builder: (context, themeMode, child) {
+                                  return GenericSettingsButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return BackgroundColorDialog(isDark: themeManager.isDarkMode);
+                                        },
+                                      );
                                     },
+                                    name: Strings.settingsColorsBackground,
                                   );
-                                },
-                                name: Strings.settingsColorsLightBackground
-                            ),
-
-                            GenericSettingsButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ColorPickerDialog(colorType: ColorType.darkBackground, title: 'Dark background');
-                                    },
-                                  );
-                                },
-                                name: Strings.settingsColorsDarkBackground
+                                }
                             ),
 
                             ValueListenableBuilder<ThemeMode>(
@@ -222,7 +216,7 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
                                       showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
-                                          return ColorPickerDialog(colorType: ColorType.searchTextColor, title: 'Search color',);
+                                          return SearchColorDialog(isDark: themeManager.isDarkMode);
                                         },
                                       );
                                     },
