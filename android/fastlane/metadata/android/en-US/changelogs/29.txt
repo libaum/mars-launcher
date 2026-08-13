@@ -1,0 +1,4 @@
+- Background and search color now preview live as you pick
+- Background color is one setting that follows your current theme
+- New search color presets
+- Mars Thoughts is now available in the Mars apps overview

@@ -40,7 +40,7 @@ const List<MarsApp> marsApps = [
   MarsApp(name: "Mars Timer", packageName: "com.catchingclouds.marstimer"),
   MarsApp(name: "Mars FX", packageName: "com.catchingclouds.marsfx"),
   MarsApp(name: "Mars Expense", packageName: "com.catchingclouds.marsexpense", private: true),
-  MarsApp(name: "Mars Thoughts", packageName: "com.catchingclouds.marsthoughts", private: true),
+  MarsApp(name: "Mars Thoughts", packageName: "com.catchingclouds.marsthoughts"),
   MarsApp(name: "Mars Sky", packageName: "com.catchingclouds.marssky", private: true),
   MarsApp(name: "Mars North", packageName: "com.catchingclouds.marsnorth", private: true),
   MarsApp(name: "Mars Log", packageName: "com.catchingclouds.marslog", private: true),
