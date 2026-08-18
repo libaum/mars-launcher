@@ -38,7 +38,7 @@ class MarsApp {
 
 const List<MarsApp> marsApps = [
   MarsApp(name: "Mars Timer", packageName: "com.catchingclouds.marstimer"),
-  MarsApp(name: "Mars FX", packageName: "com.catchingclouds.marsfx"),
+  MarsApp(name: "Mars Currency", packageName: "com.catchingclouds.marsfx"),
   MarsApp(name: "Mars Expense", packageName: "com.catchingclouds.marsexpense", private: true),
   MarsApp(name: "Mars Thoughts", packageName: "com.catchingclouds.marsthoughts"),
   MarsApp(name: "Mars Sky", packageName: "com.catchingclouds.marssky", private: true),
