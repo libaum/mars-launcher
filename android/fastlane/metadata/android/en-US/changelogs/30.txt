@@ -1,0 +1,2 @@
+- Background and search color update
+- Mars Thoughts is now available in the Mars apps overview
