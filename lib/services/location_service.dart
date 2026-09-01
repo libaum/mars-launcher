@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
+import 'package:mars_launcher/constants/global.dart';
 
 class LocationService {
   final location = new Location();
@@ -13,6 +14,18 @@ class LocationService {
   Future<bool> isServiceEnabled() async {
     try {
       return await location.serviceEnabled();
+    } on PlatformException {
+      return false;
+    }
+  }
+
+  /// Permission check that never pops a dialog -- lets callers know up front
+  /// whether [checkPermission] would send the app to the background.
+  Future<bool> hasPermissionGranted() async {
+    try {
+      if (!await isServiceEnabled()) return false;
+      final status = await location.hasPermission();
+      return status == PermissionStatus.granted || status == PermissionStatus.grantedLimited;
     } on PlatformException {
       return false;
     }
@@ -42,7 +55,12 @@ class LocationService {
         permissionStatus == PermissionStatus.grantedLimited;
   }
 
+  /// [getLocation] can hang indefinitely when the GPS fix never arrives, so
+  /// give up after [LOCATION_TIMEOUT_SECONDS]; callers fall back to the last
+  /// known coordinates.
   updateLocation() async {
-    locationData = await location.getLocation();
+    locationData = await location
+        .getLocation()
+        .timeout(const Duration(seconds: LOCATION_TIMEOUT_SECONDS));
   }
 }

@@ -1,0 +1,3 @@
+- Temperature now refreshes when you return to the launcher
+- The last temperature is kept when there is no connection, instead of showing a placeholder
+- Temperature is remembered across restarts and disappears silently once it gets too old

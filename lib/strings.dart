@@ -28,7 +28,6 @@ class Strings {
   static const settingsColorsBackground = "Background color";
 
   /// Standard names
-  static const defaultTemperatureString = "-°C";
   static const appNameUninitialized = slotDefault;
   static const packageNameClockUninitialized = "uninitialized clock app";
   static const packageNameBatteryUninitialized = "uninitialized battery app";
@@ -90,6 +89,12 @@ class Keys {
   static const keyboardAutofocusEnabled = "keyboard_autofocus_enabled";
   static const isFirstLaunch = "isFirstLaunch";
   static const statusBarFullyHidden = "statusBarFullyHidden";
+  static const temperatureCelsius = "temperatureCelsius";
+  static const temperatureUpdatedAt = "temperatureUpdatedAt";
+  static const temperatureLat = "temperatureLat";
+  static const temperatureLon = "temperatureLon";
+  static const sunriseSunsetText = "sunriseSunsetText";
+  static const sunriseSunsetUpdatedAt = "sunriseSunsetUpdatedAt";
 }
 
 class JsonKeys {

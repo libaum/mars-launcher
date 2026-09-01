@@ -8,9 +8,12 @@ class Temperature extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<String>(
+    return ValueListenableBuilder<String?>(
         valueListenable: temperatureManager.temperatureNotifier,
         builder: (context, temperature, child) {
+          /// null = no value, or the last one is too old to be meaningful.
+          /// Show nothing rather than a placeholder.
+          if (temperature == null) return const SizedBox.shrink();
           return Text(temperature, style: TEXT_STYLE_TOP_ROW);
         });
   }

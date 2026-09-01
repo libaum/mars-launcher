@@ -3,9 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:mars_launcher/logic/apps_manager.dart';
+import 'package:mars_launcher/logic/settings_manager.dart';
 import 'package:mars_launcher/logic/shortcut_manager.dart';
 import 'package:mars_launcher/logic/temperature_manager.dart';
 import 'package:mars_launcher/pages/home/home.dart';
+import 'package:mars_launcher/logic/utils.dart';
+import 'package:mars_launcher/strings.dart';
 import 'package:mars_launcher/services/shared_prefs_manager.dart';
 import 'package:mars_launcher/theme/theme_manager.dart';
 
@@ -14,6 +17,7 @@ class MockAppShortcutsManager extends Mock implements AppShortcutsManager {}
 class MockTemperatureManager extends Mock implements TemperatureManager {}
 class MockAppsManager extends Mock implements AppsManager {}
 class MockSharedPrefsManager extends Mock implements SharedPrefsManager {}
+class MockSettingsManager extends Mock implements SettingsManager {}
 
 void main() {
   final getIt = GetIt.instance;
@@ -26,9 +30,28 @@ void main() {
     final mockTemperatureManager = MockTemperatureManager();
     final mockAppsManager = MockAppsManager();
     final mockSharedPrefsManager = MockSharedPrefsManager();
+    final mockSettingsManager = MockSettingsManager();
+
+    /// The home tree reads every widget toggle; default them all to off so the
+    /// top row stays empty and the gesture assertions are the only variable.
+    for (final entry in {
+      Keys.clockEnabled: () => mockSettingsManager.clockWidgetEnabledNotifier,
+      Keys.batteryEnabled: () => mockSettingsManager.batteryWidgetEnabledNotifier,
+      Keys.weatherEnabled: () => mockSettingsManager.weatherWidgetEnabledNotifier,
+      Keys.calendarEnabled: () => mockSettingsManager.calendarWidgetEnabledNotifier,
+      Keys.statusBarFullyHidden: () => mockSettingsManager.statusBarFullyHiddenNotifier,
+    }.entries) {
+      when(entry.value).thenReturn(ValueNotifierWithKey<bool>(false, entry.key));
+    }
+    when(() => mockSettingsManager.enabledMarsAppsNotifier)
+        .thenReturn(ValueNotifierWithKey<List<String>>([], Keys.enabledMarsApps));
+    when(() => mockSettingsManager.marsAppsUnlockedNotifier)
+        .thenReturn(ValueNotifierWithKey<bool>(false, Keys.marsAppsUnlocked));
 
     when(() => mockTemperatureManager.sunriseSunsetNotifier)
         .thenReturn(ValueNotifier<String>(""));
+    when(() => mockTemperatureManager.maybeUpdateTemperature())
+        .thenReturn(null);
 
     when(() => mockAppsManager.appsNotifier)
         .thenReturn(ValueNotifier([]));
@@ -47,6 +70,7 @@ void main() {
     getIt.registerSingleton<TemperatureManager>(mockTemperatureManager);
     getIt.registerSingleton<AppsManager>(mockAppsManager);
     getIt.registerSingleton<SharedPrefsManager>(mockSharedPrefsManager);
+    getIt.registerSingleton<SettingsManager>(mockSettingsManager);
   });
 
   testWidgets("Swipe from bottom edge does not open search", (tester) async {

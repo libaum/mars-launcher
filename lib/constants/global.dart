@@ -8,7 +8,11 @@ const DURATION_SHOW_SUNRISE_SUNSET = 5; /// in seconds
 const int MIN_NUM_OF_SHORTCUT_ITEMS = 0;
 const int MAX_NUM_OF_SHORTCUT_ITEMS = 7;
 const int NUMBER_OF_SHORTCUT_ITEMS_ON_STARTUP = 4;
-const UPDATE_TEMPERATURE_EVERY = 5; /// in minutes
+const int TEMPERATURE_MIN_REFRESH_MINUTES = 30; /// don't refetch more often than this
+const int TEMPERATURE_MAX_AGE_HOURS = 6; /// after this the value is hidden entirely
+const int SUNRISE_SUNSET_MAX_AGE_HOURS = 10;
+const int LOCATION_TIMEOUT_SECONDS = 10;
+const int WEATHER_REQUEST_TIMEOUT_SECONDS = 15;
 const LOAD_APPS_FROM_JSON = false; /// has to be false on release
 
 /// Overrides temperature/sunrise/sunset with fixed showcase values instead of fetching from location.

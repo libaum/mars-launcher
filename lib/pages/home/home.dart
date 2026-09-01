@@ -79,6 +79,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
     if (state == AppLifecycleState.resumed) {
       appsManager.suppressLifecycleReset = false;
+      temperatureManager.maybeUpdateTemperature();
     }
     if ((state == AppLifecycleState.inactive || state == AppLifecycleState.paused) && mounted) {
       if (appsManager.suppressLifecycleReset) return;
