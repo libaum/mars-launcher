@@ -1,0 +1,2 @@
+- Weather refreshes when you open the launcher and keeps its last value when you're offline
+- Smaller fixes and polish
