@@ -19,11 +19,11 @@ class LocationService {
     }
   }
 
-  /// Permission check that never pops a dialog -- lets callers know up front
-  /// whether [checkPermission] would send the app to the background.
+  /// Permission check that never pops a dialog. Deliberately does not care
+  /// whether location services are switched on: a caller that has cached
+  /// coordinates can still do useful work without a fresh fix.
   Future<bool> hasPermissionGranted() async {
     try {
-      if (!await isServiceEnabled()) return false;
       final status = await location.hasPermission();
       return status == PermissionStatus.granted || status == PermissionStatus.grantedLimited;
     } on PlatformException {

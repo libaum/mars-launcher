@@ -43,7 +43,26 @@ class TemperatureManager {
   /// Fires exactly once, when the current reading ages out, so the value also
   /// disappears while the launcher sits open. No network involved.
   Timer? _expiryTimer;
-  bool _fetchInFlight = false;
+
+  /// Throttles attempts so a resume plus the startup callback don't fetch
+  /// twice. Deliberately a timestamp and not an "in flight" flag: a fetch
+  /// interrupted by Android pausing the app never completes its future, and a
+  /// flag would then stay set for the rest of the process -- which silently
+  /// killed every later refresh.
+  DateTime _lastAttempt = DateTime(0);
+  static const _minGapBetweenAttempts = Duration(seconds: 20);
+
+  /// Right after a cold start or a resume the location plugin is often not
+  /// bound yet, so the first attempt fails through no fault of the user. Retry
+  /// a few times with a growing delay instead of leaving the top row empty
+  /// until the next time they leave and come back.
+  Timer? _retryTimer;
+  int _failedAttempts = 0;
+  static const _retryDelays = [
+    Duration(seconds: 5),
+    Duration(seconds: 15),
+    Duration(seconds: 30),
+  ];
 
   TemperatureManager() {
     print("[$runtimeType] INITIALIZING");
@@ -96,6 +115,9 @@ class TemperatureManager {
 
     _publishTemperature();
 
+    /// A fresh visit deserves a fresh set of retries.
+    _failedAttempts = 0;
+
     final reading = _reading;
     if (reading == null || reading.needsRefresh(DateTime.now())) {
       updateTemperature();
@@ -105,7 +127,7 @@ class TemperatureManager {
   /// [userInitiated] marks calls that follow the user just flipping the
   /// weather toggle in Settings -- only then do we nudge towards the app's
   /// settings on a permanent permission denial.
-  void updateTemperature({bool userInitiated = false}) async {
+  void updateTemperature({bool userInitiated = false, bool isRetry = false}) async {
     if (SHOWCASE_TEMPERATURE != null) {
       _setNewTemperature(SHOWCASE_TEMPERATURE!);
       _updateSunriseSunsetString("Sunrise: $SHOWCASE_SUNRISE\nSunset:  $SHOWCASE_SUNSET");
@@ -113,27 +135,40 @@ class TemperatureManager {
     }
 
     if (!settingsManager.weatherWidgetEnabledNotifier.value) {
-      return _couldNotRetrieveNewTemperature("weather widget disabled");
+      return _couldNotRetrieveNewTemperature("weather widget disabled", retry: false);
     }
 
     /// Location needs a foreground Activity -- requesting it while another app
     /// is in front throws MISSING_ACTIVITY. Skip; we retry on the next resume.
     if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed) {
-      return _couldNotRetrieveNewTemperature("app not in foreground, skipping");
+      return _couldNotRetrieveNewTemperature("app not in foreground, skipping", retry: false);
     }
 
-    if (_fetchInFlight) return;
-    _fetchInFlight = true;
+    final bypassThrottle = userInitiated || isRetry;
+    if (!bypassThrottle && DateTime.now().difference(_lastAttempt) < _minGapBetweenAttempts) {
+      return;
+    }
+    _lastAttempt = DateTime.now();
+    _retryTimer?.cancel();
 
     try {
-      /// Only suppress the "app left -> reset to home" handling when a system
-      /// dialog can actually appear; otherwise the flag would stay set,
-      /// because no resume event ever arrives to clear it in home.dart.
-      final alreadyGranted = await locationService.hasPermissionGranted();
-      if (!alreadyGranted) {
+      /// An automatic refresh only ever *checks* the permission. Asking for it
+      /// would pop a system dialog, which sends the launcher to the background
+      /// and looks exactly like the user opening another app -- the reason the
+      /// [AppsManager.suppressLifecycleReset] dance existed here and kept
+      /// swallowing the reset to the home view. Permission is asked for where
+      /// the user can make sense of it: when enabling the widget in Settings.
+      var hasPermission = await locationService.hasPermissionGranted();
+
+      if (!hasPermission && userInitiated) {
+        /// The user just flipped the toggle, so a dialog is expected here.
         appsManager.suppressLifecycleReset = true;
+        try {
+          hasPermission = await locationService.checkPermission();
+        } finally {
+          appsManager.suppressLifecycleReset = false;
+        }
       }
-      final hasPermission = alreadyGranted || await locationService.checkPermission();
 
       if (!hasPermission) {
         if (userInitiated && locationService.isPermanentlyDenied) {
@@ -150,8 +185,8 @@ class TemperatureManager {
 
       print("[$runtimeType] Fetching new weather data");
       final now = DateTime.now();
-      /// Without a timeout a hanging request would leave [_fetchInFlight] set
-      /// forever and block every later refresh.
+      /// A hanging request would otherwise keep the whole update pending
+      /// indefinitely.
       final response = await weatherApi
           .request(
             locations: {
@@ -171,6 +206,7 @@ class TemperatureManager {
       if (temp == null) {
         return _couldNotRetrieveNewTemperature("response contained no temperature");
       }
+      _failedAttempts = 0;
       _setNewTemperature(temp.round());
 
       if (_sunriseSunsetIsOutdated()) {
@@ -188,8 +224,6 @@ class TemperatureManager {
       /// Covers the location plugin as well -- getLocation() can throw a
       /// PlatformException or time out.
       _couldNotRetrieveNewTemperature("Error fetching weather data: $e");
-    } finally {
-      _fetchInFlight = false;
     }
   }
 
@@ -239,9 +273,22 @@ class TemperatureManager {
   }
 
   /// A failed fetch must not change what is on screen -- only age does.
-  void _couldNotRetrieveNewTemperature(String cause) {
+  void _couldNotRetrieveNewTemperature(String cause, {bool retry = true}) {
     print("[$runtimeType] $cause");
     _publishTemperature();
+    if (retry) _scheduleRetry();
+  }
+
+  void _scheduleRetry() {
+    if (_failedAttempts >= _retryDelays.length) return;
+    final delay = _retryDelays[_failedAttempts];
+    _failedAttempts++;
+    _retryTimer?.cancel();
+    _retryTimer = Timer(delay, () {
+      if (settingsManager.weatherWidgetEnabledNotifier.value) {
+        updateTemperature(isRetry: true);
+      }
+    });
   }
 
   /// Refresh once the values are stale or simply from another day, so the
