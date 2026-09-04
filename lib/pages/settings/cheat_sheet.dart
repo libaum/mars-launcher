@@ -8,8 +8,8 @@ import 'package:mars_launcher/services/service_locator.dart';
 const _sections = <(String, List<(String, String)>)>[
   ('Core', [
     ('Tap app', 'Open'),
-    ('Hold app', 'Reassign'),
-    ('Hold void', 'Settings'),
+    ('Hold app', 'Set app'),
+    ('Hold anywhere', 'Settings'),
     ('Double tap', 'Toggle theme'),
   ]),
   ('Navigation', [

@@ -11,6 +11,12 @@ import 'package:mars_launcher/services/service_locator.dart';
 import 'package:mars_launcher/strings.dart';
 
 class AppShortcutsFragment extends StatelessWidget {
+  /// Optional key on the slot column itself, so the onboarding overlay can
+  /// measure the real slots instead of the whole centered area around them.
+  final Key? slotsKey;
+
+  AppShortcutsFragment({super.key, this.slotsKey});
+
   final appShortcutsManager = getIt<AppShortcutsManager>();
   final settingsLogic = getIt<SettingsManager>();
 
@@ -18,12 +24,9 @@ class AppShortcutsFragment extends StatelessWidget {
     appInfo.open();
   }
 
-  String? _placeholderFor(AppInfo app, int index) {
+  String? _placeholderFor(AppInfo app) {
     if (app.appName != Strings.appNameUninitialized) return null;
-    if (index < Strings.shortcutPlaceholders.length) {
-      return Strings.shortcutPlaceholders[index];
-    }
-    return Strings.shortcutPlaceholderDefault;
+    return Strings.notSet;
   }
 
   callbackHandleOnLongPress(BuildContext context, AppInfo appInfo) {
@@ -51,6 +54,8 @@ class AppShortcutsFragment extends StatelessWidget {
                 builder: (context, shortcutApps, child) {
                   final visibleApps = shortcutApps.getRange(0, numOfShortcutItems).toList();
                   return Column(
+                    key: slotsKey,
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -58,7 +63,7 @@ class AppShortcutsFragment extends StatelessWidget {
                         AppCard(
                           appInfo: visibleApps[i],
                           isShortcutItem: true,
-                          placeholderText: _placeholderFor(visibleApps[i], i),
+                          placeholderText: _placeholderFor(visibleApps[i]),
                           callbackHandleOnPress: callbackOpenApp,
                           callbackHandleOnLongPress: callbackHandleOnLongPress,
                         ),

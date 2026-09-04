@@ -149,19 +149,23 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
 
                             buildAppsNumberRow(),
 
-                            GenericSettingsButton(
+                            AppSettingsRow(
+                                name: Strings.settingsSwipeLeft,
+                                appNotifier:
+                                    appShortcutsManager.swipeLeftAppNotifier,
                                 onPressed: () {
                                   pushAppSearch(
                                       appShortcutsManager.swipeLeftAppNotifier);
-                                },
-                                name: Strings.settingsSwipeLeft),
+                                }),
 
-                            GenericSettingsButton(
+                            AppSettingsRow(
+                                name: Strings.settingsSwipeRight,
+                                appNotifier:
+                                    appShortcutsManager.swipeRightAppNotifier,
                                 onPressed: () {
                                   pushAppSearch(appShortcutsManager
                                       .swipeRightAppNotifier);
-                                },
-                                name: Strings.settingsSwipeRight),
+                                }),
 
                             buildTopRowAppRow(
                                 specialShortcutAppNotifier:
@@ -284,42 +288,32 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
     );
   }
 
-  Row buildTopRowAppRow(
+  Widget buildTopRowAppRow(
       {required ValueNotifierWithKey<AppInfo> specialShortcutAppNotifier,
       required ValueNotifierWithKey<bool> widgetEnabledNotifier,
       required String name}) {
-    return Row(
-      children: [
-        GenericSettingsButton(
-            onPressed: () {
-              pushAppSearch(specialShortcutAppNotifier);
-            },
-            name: name),
-        Expanded(
-          child: Container(),
-        ),
-        ShowHideButton(
-          notifier: widgetEnabledNotifier,
-          onPressed: () {
-            settingsManager.setNotifierValueAndSave(widgetEnabledNotifier);
-          },
-        ),
-      ],
+    return AppSettingsRow(
+      name: name,
+      appNotifier: specialShortcutAppNotifier,
+      enabledNotifier: widgetEnabledNotifier,
+      onPressed: () {
+        pushAppSearch(specialShortcutAppNotifier);
+      },
+      onToggle: () {
+        settingsManager.setNotifierValueAndSave(widgetEnabledNotifier);
+      },
     );
   }
 
-  Row buildWeatherAppRow(BuildContext context) {
-    return Row(
-      children: [
-        GenericSettingsButton(
-            onPressed: () {
-              pushAppSearch(appShortcutsManager.weatherAppNotifier);
-            },
-            name: Strings.settingsWeatherApp),
-        Expanded(child: Container()),
-        ShowHideButton(
-          notifier: settingsManager.weatherWidgetEnabledNotifier,
-          onPressed: () async {
+  Widget buildWeatherAppRow(BuildContext context) {
+    return AppSettingsRow(
+        name: Strings.settingsWeatherApp,
+        appNotifier: appShortcutsManager.weatherAppNotifier,
+        enabledNotifier: settingsManager.weatherWidgetEnabledNotifier,
+        onPressed: () {
+          pushAppSearch(appShortcutsManager.weatherAppNotifier);
+        },
+        onToggle: () async {
             // Check if this is the first time enabling weather
             if (sharedPrefsManager.readData(Keys.weatherActivatedAtLeastOnce) ==
                 null) {
@@ -391,10 +385,7 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
               settingsManager.setNotifierValueAndSave(
                   settingsManager.weatherWidgetEnabledNotifier);
             }
-          },
-        ),
-      ],
-    );
+        });
   }
 
 
@@ -446,37 +437,6 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
           },
         ),
       ],
-    );
-  }
-}
-
-class ShowHideButton extends StatelessWidget {
-  const ShowHideButton(
-      {Key? key, required this.notifier, required this.onPressed})
-      : super(key: key);
-
-  final ValueNotifierWithKey<bool> notifier;
-  final Function onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 60,
-      child: TextButton(
-        onPressed: () {
-          onPressed();
-        },
-        child: ValueListenableBuilder<bool>(
-            valueListenable: notifier,
-            builder: (context, enabled, child) {
-              return Center(
-                child: Text(
-                  enabled ? "●" : "○",
-                  style: TEXT_STYLE_SETTINGS_TRAILING,
-                ),
-              );
-            }),
-      ),
     );
   }
 }

@@ -13,7 +13,7 @@ import 'package:mars_launcher/pages/settings/settings.dart';
 import 'package:mars_launcher/services/service_locator.dart';
 import 'package:mars_launcher/services/shared_prefs_manager.dart';
 import 'package:mars_launcher/strings.dart';
-import 'package:mars_launcher/pages/settings/cheat_sheet.dart';
+import 'package:mars_launcher/pages/home/onboarding_overlay.dart';
 
 const double HEIGHT_SIZED_BOX = 50;
 const double BOTTOM_GESTURE_DEAD_ZONE = 16;
@@ -50,10 +50,10 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   final sensitivity = 8;
 
   final ValueNotifier<HomeView> homeViewNotifier = ValueNotifier(HomeView.shortcuts);
+  final GlobalKey _shortcutsKey = GlobalKey();
   bool _allowVerticalDrag = true;
   bool _verticalDragConsumed = false;
-  bool _tipMounted = false;
-  bool _tipVisible = true;
+  bool _showOnboarding = false;
 
   @override
   void initState() {
@@ -62,15 +62,15 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       appsManager.loadAndSyncApps();
     });
-    final isFirstLaunch =
-        sharedPrefsManager.readData(Keys.isFirstLaunch) ?? true;
-    if (isFirstLaunch) {
-      _tipMounted = true;
-      sharedPrefsManager.saveData(Keys.isFirstLaunch, false);
-      Future.delayed(const Duration(seconds: 20), () {
-        if (mounted) setState(() => _tipVisible = false);
-      });
-    }
+    /// The flag is only written once the overlay is actually finished or
+    /// skipped, so a first start that gets killed shows it again.
+    _showOnboarding =
+        !(sharedPrefsManager.readData(Keys.onboardingCompleted) ?? false);
+  }
+
+  void _finishOnboarding() {
+    sharedPrefsManager.saveData(Keys.onboardingCompleted, true);
+    if (mounted) setState(() => _showOnboarding = false);
   }
 
   @override
@@ -151,7 +151,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                               return widget.appShortcutsBuilder?.call() ??
                                   Align(
                                       alignment: Alignment.centerLeft, // Center only vertically
-                                      child: AppShortcutsFragment());
+                                      child: AppShortcutsFragment(
+                                          slotsKey: _shortcutsKey));
                           }
                         },
                       ),
@@ -159,62 +160,14 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   ],
                 ),
               ),
-              if (_tipMounted)
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 24,
-                  child: SafeArea(
-                    child: AnimatedOpacity(
-                      opacity: _tipVisible ? 1.0 : 0.0,
-                      duration: const Duration(milliseconds: 400),
-                      onEnd: () {
-                        if (!_tipVisible && mounted) {
-                          setState(() => _tipMounted = false);
-                        }
-                      },
-                      child: _buildFirstLaunchTip(context),
-                    ),
+              if (_showOnboarding)
+                Positioned.fill(
+                  child: OnboardingOverlay(
+                    shortcutsKey: _shortcutsKey,
+                    onFinished: _finishOnboarding,
                   ),
                 ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFirstLaunchTip(BuildContext context) {
-    final primary = Theme.of(context).primaryColor;
-    final accent = Theme.of(context).colorScheme.secondary;
-    return Center(
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          setState(() => _tipVisible = false);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => FlightManual()),
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-          child: Text.rich(
-            TextSpan(
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w300,
-                color: primary.withValues(alpha: 0.45),
-              ),
-              children: [
-                TextSpan(text: '${Strings.firstLaunchTip}   '),
-                TextSpan(
-                  text: Strings.firstLaunchTipAction,
-                  style: TextStyle(color: accent),
-                ),
-              ],
-            ),
-            textAlign: TextAlign.center,
           ),
         ),
       ),

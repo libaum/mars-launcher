@@ -20,14 +20,14 @@ class AppCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPlaceholder = placeholderText != null;
-    final letterSpacing = isShortcutItem && !isPlaceholder ? 1.0 : 0.0;
+    final letterSpacing = isShortcutItem ? 1.0 : 0.0;
     final baseColor = isShortcutItem
         ? Theme.of(context).primaryColor
         : Theme.of(context).colorScheme.secondary;
+    /// An empty slot keeps the type size of a set app and only dims, so the
+    /// four slots read as one column either way.
     final textColor = isPlaceholder ? baseColor.withValues(alpha: 0.45) : baseColor;
-    final textStyle = isPlaceholder
-        ? const TextStyle(fontSize: 22, fontWeight: FontWeight.w300)
-        : TEXT_STYLE_APP_LARGE;
+    const textStyle = TEXT_STYLE_APP_LARGE;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),

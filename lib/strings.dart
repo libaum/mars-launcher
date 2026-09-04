@@ -1,10 +1,10 @@
 class Strings {
   /// Settings page names
   static const settingsTitle = "Settings";
-  static const settingsClockApp = "Clock app";
+  static const settingsClockApp = "Clock";
   static const settingsBattery = "Battery";
-  static const settingsWeatherApp = "Weather app";
-  static const settingsCalendarApp = "Calendar app";
+  static const settingsWeatherApp = "Weather";
+  static const settingsCalendarApp = "Calendar";
   static const settingsSwipeLeft = "Swipe left";
   static const settingsSwipeRight = "Swipe right";
   static const settingsHiddenApps = "Hidden apps";
@@ -40,20 +40,10 @@ class Strings {
   /// Default slots
   static const slotDefault = ' + ';
 
-  /// Shortcut placeholders — shown for uninitialized slots until reassigned.
-  /// Indices 0..3 carry first-launch tutorial hints; later slots fall back
-  /// to [shortcutPlaceholderDefault].
-  static const shortcutPlaceholders = [
-    'Hold here to set an app',
-    'Swipe up to search',
-    'Hold void for settings',
-    'Double tap to flip theme',
-  ];
-  static const shortcutPlaceholderDefault = 'Hold to set an app';
-
-  /// First-launch tip shown as a SnackBar.
-  static const firstLaunchTip = 'Tip: find all commands in cheat sheet';
-  static const firstLaunchTipAction = 'Open';
+  /// Shown wherever no app is set yet: in an empty shortcut slot and as the
+  /// sublabel of a settings row. The gestures themselves are explained once
+  /// by the first-run onboarding overlay, so the slots stay plain.
+  static const notSet = 'Not set';
 
   /// Flight manual
   static const settingsFlightManual = "Cheat sheet";
@@ -87,7 +77,7 @@ class Keys {
   static const darkBackground = "dark_background";
   static const weatherActivatedAtLeastOnce = "weatherActivatedAtLeastOnce";
   static const keyboardAutofocusEnabled = "keyboard_autofocus_enabled";
-  static const isFirstLaunch = "isFirstLaunch";
+  static const onboardingCompleted = "onboardingCompleted";
   static const statusBarFullyHidden = "statusBarFullyHidden";
   static const temperatureCelsius = "temperatureCelsius";
   static const temperatureUpdatedAt = "temperatureUpdatedAt";

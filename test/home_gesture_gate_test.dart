@@ -62,8 +62,8 @@ void main() {
 
     when(() => mockSharedPrefsManager.readData(any()))
         .thenReturn(null);
-    when(() => mockSharedPrefsManager.readData('isFirstLaunch'))
-        .thenReturn(false);
+    when(() => mockSharedPrefsManager.readData(Keys.onboardingCompleted))
+        .thenReturn(true);
 
     getIt.registerSingleton<ThemeManager>(mockThemeManager);
     getIt.registerSingleton<AppShortcutsManager>(mockAppShortcutsManager);
