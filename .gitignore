@@ -240,3 +240,5 @@ apk_archive/
 
 # Exported personal launcher settings (#exportsettings admin code)
 mars_settings.json
+
+.claude/
