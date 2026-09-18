@@ -19,12 +19,16 @@ dependencies {
 
 android {
     namespace = "com.cloudcatcher.mars_launcher"
-    compileSdk = 36
+    compileSdk = 37
     ndkVersion = "28.2.13676358"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        resValues = true
     }
 
     defaultConfig {
@@ -77,7 +81,7 @@ kotlin {
 // ("VM snapshot invalid"). The AAB path is unaffected. Force the ordering + input here.
 android.applicationVariants.all { variant ->
     def capName = variant.name.capitalize()
-    def flutterJniLibs = layout.buildDirectory.dir("intermediates/flutter/${variant.name}/jniLibs")
+    def flutterJniLibs = layout.buildDirectory.dir("intermediates/flutter/${variant.name}/jniLibs").get().asFile
     android.sourceSets.getByName(variant.name).jniLibs.srcDir(flutterJniLibs)
     tasks.matching { it.name == "merge${capName}NativeLibs" }.configureEach {
         dependsOn("copyJniLibsflutterBuild${capName}")
