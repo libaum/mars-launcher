@@ -39,27 +39,27 @@ const _steps = <_Step>[
     _StepKind.plain,
   ),
   _Step(
-    'Your Shortcuts',
+    'Your shortcuts',
     'Hold a slot to set an app. Tap it to open.',
     _StepKind.frame,
     accent: 'Hold a slot',
   ),
   _Step(
     'Search',
-    'Swipe up to find all your other apps super fast!',
+    'Swipe up to find any other app.',
     _StepKind.swipeUp,
     accent: 'Swipe up',
   ),
   _Step(
     'Settings',
-    'Long tap on empty space to customize your experience.',
+    'Hold anywhere on empty space to make Mars yours.',
     _StepKind.hold,
-    accent: 'Long tap on empty space',
+    accent: 'Hold anywhere on empty space',
   ),
   _Step(
-    'The Rest Is Yours',
-    'Widgets, themes, gestures. Discover them as you go. '
-    'For reference look into settings → cheat sheet.',
+    'The rest is yours',
+    'Widgets, themes, gestures. Discover them as you go, '
+    'or peek at the cheat sheet in settings.',
     _StepKind.plain,
     accent: 'cheat sheet',
   ),
