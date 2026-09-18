@@ -1,0 +1,3 @@
+- A short introduction on first start
+- Clearer settings: each row shows which app is set
+- Shortcut slots without tutorial text
