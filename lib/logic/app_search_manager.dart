@@ -26,6 +26,11 @@ class AppSearchManager {
 
   ValueNotifierWithKey<AppInfo>? specialShortcutAppNotifier;
 
+  /// What is currently typed into the search field. Kept here so an app list
+  /// change (e.g. an uninstall from within the search) re-applies the filter
+  /// instead of dumping the full list under an unchanged query.
+  String _query = '';
+
   AppSearchManager() {
     filteredAppsNotifier = ValueNotifier(getFilteredApps());
 
@@ -45,7 +50,9 @@ class AppSearchManager {
   }
 
   List<AppInfo> getFilteredApps() {
-    return appsManager.appsNotifier.value.where((app) => !app.isHidden).toList();
+    return appsManager.appsNotifier.value
+        .where((app) => app.displayNameLower.contains(_query) && !app.isHidden)
+        .toList();
   }
 
   AppCard generateAppCard(AppInfo appInfo) {
@@ -68,6 +75,7 @@ class AppSearchManager {
   }
 
   resetFilteredList() async {
+    _query = '';
     filteredAppsNotifier.value = getFilteredApps();
 
     appSearchMode = shortcutIndex = specialShortcutAppNotifier = null;
@@ -179,10 +187,8 @@ class AppSearchManager {
       }
     }
 
-    final query = searchValue.toLowerCase();
-    List<AppInfo> filteredApps = appsManager.appsNotifier.value
-        .where((app) => app.displayNameLower.contains(query) && !app.isHidden)
-        .toList();
+    _query = searchValue.toLowerCase();
+    final filteredApps = getFilteredApps();
     if (filteredApps.length == 1) {
       handleOnPress(context, filteredApps.first);
     }

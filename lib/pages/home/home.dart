@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mars_launcher/logic/app_search_manager.dart';
 import 'package:mars_launcher/logic/apps_manager.dart';
@@ -54,6 +56,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   bool _allowVerticalDrag = true;
   bool _verticalDragConsumed = false;
   bool _showOnboarding = false;
+  Timer? _suppressResetTimer;
 
   @override
   void initState() {
@@ -78,7 +81,14 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
 
     if (state == AppLifecycleState.resumed) {
-      appsManager.suppressLifecycleReset = false;
+      /// Android's uninstall runs through two system activities (confirm
+      /// dialog, then the "Uninstalling…" progress) and briefly resumes the
+      /// launcher in between. Release the suppression with a delay so that
+      /// bounce doesn't reset the home view.
+      _suppressResetTimer?.cancel();
+      _suppressResetTimer = Timer(const Duration(seconds: 2), () {
+        appsManager.suppressLifecycleReset = false;
+      });
       temperatureManager.maybeUpdateTemperature();
     }
     if ((state == AppLifecycleState.inactive || state == AppLifecycleState.paused) && mounted) {
@@ -86,6 +96,13 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       homeViewNotifier.value = HomeView.shortcuts;
       Navigator.popUntil(context, (route) => route.isFirst);
     }
+  }
+
+  @override
+  void dispose() {
+    _suppressResetTimer?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
