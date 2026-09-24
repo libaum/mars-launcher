@@ -24,6 +24,8 @@ class MarsAppsFragment extends StatelessWidget {
       appsManager.launchApp(app.packageName);
       return;
     }
+    /// Private apps have no store listing yet.
+    if (app.private) return;
     /// Prefer the Play Store app, fall back to the web listing.
     final market = Uri.parse("market://details?id=${app.packageName}");
     if (await canLaunchUrl(market)) {
