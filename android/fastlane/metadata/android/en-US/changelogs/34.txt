@@ -1,0 +1,2 @@
+- Smaller fixes and polish
+- Under-the-hood updates for newer Android versions
