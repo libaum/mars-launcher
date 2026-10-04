@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -37,6 +38,10 @@ class TemperatureManager {
   TemperatureReading? _reading;
   String sunriseSunsetString = "";
   DateTime _lastSunriseSunsetUpdate = DateTime(0);
+
+  /// Today's hourly UV index, keyed by hour start. Stored as a whole day so
+  /// the value shown is the current hour's, even hours after the last fetch.
+  Map<DateTime, num> _uvIndexByHour = {};
   double? _lastLatitude;
   double? _lastLongitude;
 
@@ -99,6 +104,14 @@ class TemperatureManager {
     if (sunUpdatedAt is int) {
       _lastSunriseSunsetUpdate = DateTime.fromMillisecondsSinceEpoch(sunUpdatedAt);
     }
+
+    final storedUvIndex = sharedPrefsManager.readData(Keys.uvIndexHourly);
+    if (storedUvIndex is String) {
+      try {
+        _uvIndexByHour = (json.decode(storedUvIndex) as Map<String, dynamic>).map(
+            (millis, uv) => MapEntry(DateTime.fromMillisecondsSinceEpoch(int.parse(millis)), uv as num));
+      } catch (_) {}
+    }
   }
 
   /// Coordinates are stored as strings -- [SharedPrefsManager.saveData] has
@@ -131,6 +144,8 @@ class TemperatureManager {
     if (SHOWCASE_TEMPERATURE != null) {
       _setNewTemperature(SHOWCASE_TEMPERATURE!);
       _updateSunriseSunsetString("Sunrise: $SHOWCASE_SUNRISE\nSunset:  $SHOWCASE_SUNSET");
+      final hour = DateTime.now();
+      _setUvIndexByHour({DateTime(hour.year, hour.month, hour.day, hour.hour): SHOWCASE_UV_INDEX});
       return;
     }
 
@@ -198,6 +213,7 @@ class TemperatureManager {
               )
             },
             current: {WeatherCurrent.temperature_2m},
+            hourly: {WeatherHourly.uv_index},
             daily: {WeatherDaily.sunrise, WeatherDaily.sunset},
           )
           .timeout(const Duration(seconds: WEATHER_REQUEST_TIMEOUT_SECONDS));
@@ -208,6 +224,9 @@ class TemperatureManager {
       }
       _failedAttempts = 0;
       _setNewTemperature(temp.round());
+
+      final uvIndex = response.segments[0].hourlyData[WeatherHourly.uv_index]?.values;
+      if (uvIndex != null && uvIndex.isNotEmpty) _setUvIndexByHour(uvIndex);
 
       if (_sunriseSunsetIsOutdated()) {
         final sunriseUnix = response.segments[0].dailyData[WeatherDaily.sunrise]?.values.values.first;
@@ -307,9 +326,30 @@ class TemperatureManager {
     sharedPrefsManager.saveData(Keys.sunriseSunsetUpdatedAt, _lastSunriseSunsetUpdate.millisecondsSinceEpoch);
   }
 
+  void _setUvIndexByHour(Map<DateTime, num> uvIndexByHour) {
+    _uvIndexByHour = uvIndexByHour;
+    sharedPrefsManager.saveData(
+        Keys.uvIndexHourly,
+        json.encode(uvIndexByHour.map((hour, uv) => MapEntry(hour.millisecondsSinceEpoch.toString(), uv))));
+  }
+
+  /// The UV index of the current hour, or null if we have no value for it
+  /// (no fetch today, or the stored day is over).
+  int? _currentUvIndex() {
+    final now = DateTime.now();
+    for (final entry in _uvIndexByHour.entries) {
+      if (!now.isBefore(entry.key) && now.difference(entry.key) < const Duration(hours: 1)) {
+        return entry.value.round();
+      }
+    }
+    return null;
+  }
+
   void showSunriseSunsetForAFewSeconds() async {
     if (sunriseSunsetString.isEmpty) return;
-    sunriseSunsetNotifier.value = sunriseSunsetString;
+    final uvIndex = _currentUvIndex();
+    sunriseSunsetNotifier.value =
+        uvIndex == null ? sunriseSunsetString : "$sunriseSunsetString\nUV index: $uvIndex";
     await Future.delayed(Duration(seconds: DURATION_SHOW_SUNRISE_SUNSET));
     sunriseSunsetNotifier.value = "";
   }

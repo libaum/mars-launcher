@@ -27,6 +27,9 @@ class SettingsManager {
   /// Whether the private Mars apps have been revealed via the unlock code.
   late final ValueNotifierWithKey<bool> marsAppsUnlockedNotifier;
 
+  /// Package names of Mars apps added by hand (unlocked only), in add order.
+  late final ValueNotifierWithKey<List<String>> customMarsAppsNotifier;
+
   /// Whether the status bar is fully hidden natively (default) rather than
   /// just color-blended. Fully hidden requires two swipes to pull the
   /// notification shade (system reveal, then drag) — toggled via
@@ -48,6 +51,8 @@ class SettingsManager {
         Keys.enabledMarsApps);
     marsAppsUnlockedNotifier = ValueNotifierWithKey<bool>(
         sharedPrefsManager.readData(Keys.marsAppsUnlocked) ?? false, Keys.marsAppsUnlocked);
+    customMarsAppsNotifier = ValueNotifierWithKey<List<String>>(
+        sharedPrefsManager.readStringList(Keys.customMarsApps) ?? [], Keys.customMarsApps);
     statusBarFullyHiddenNotifier = ValueNotifierWithKey<bool>(
         sharedPrefsManager.readData(Keys.statusBarFullyHidden) ?? true, Keys.statusBarFullyHidden);
     _applyStatusBarVisibility();
@@ -107,6 +112,28 @@ class SettingsManager {
     }
     enabledMarsAppsNotifier.value = enabled;
     sharedPrefsManager.saveData(Keys.enabledMarsApps, enabled);
+  }
+
+  /// Add a Mars app by package name; it is shown right away.
+  void addCustomMarsApp(String packageName) {
+    if (customMarsAppsNotifier.value.contains(packageName)) return;
+    final custom = [...customMarsAppsNotifier.value, packageName];
+    customMarsAppsNotifier.value = custom;
+    sharedPrefsManager.saveData(Keys.customMarsApps, custom);
+    if (!enabledMarsAppsNotifier.value.contains(packageName)) {
+      toggleMarsApp(packageName);
+    }
+  }
+
+  void removeCustomMarsApp(String packageName) {
+    final custom = customMarsAppsNotifier.value
+        .where((p) => p != packageName)
+        .toList();
+    customMarsAppsNotifier.value = custom;
+    sharedPrefsManager.saveData(Keys.customMarsApps, custom);
+    if (enabledMarsAppsNotifier.value.contains(packageName)) {
+      toggleMarsApp(packageName);
+    }
   }
 
   Future<void> openDefaultLauncherSettings() async {

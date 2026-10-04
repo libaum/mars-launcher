@@ -21,16 +21,36 @@ class MarsApp {
   /// Flip to `false` when the app is published to the Play Store.
   final bool private;
 
+  /// Added by the user via package name in the Mars apps settings (only
+  /// possible once unlocked). Always private; its name comes from the
+  /// installed app, see [label].
+  final bool custom;
+
   const MarsApp({
     required this.name,
     required this.packageName,
     this.private = false,
+    this.custom = false,
   });
+
+  /// A user-added app — the package name stands in as name until installed.
+  const MarsApp.custom(this.packageName)
+      : name = packageName,
+        private = true,
+        custom = true;
 
   /// The name without the "Mars " prefix — used in listings that are already
   /// labelled "Mars apps", where repeating "Mars" on every row is redundant.
-  String get displayName =>
-      name.startsWith("Mars ") ? name.substring(5) : name;
+  String get displayName => _stripMarsPrefix(name);
+
+  /// The name shown in the Mars apps listings. A name the user set via
+  /// rename wins as-is; a custom app falls back to its installed label
+  /// (prefix stripped), then to the package name.
+  String label({String? renamedName, String? installedName}) {
+    if (renamedName != null) return renamedName;
+    if (custom && installedName != null) return _stripMarsPrefix(installedName);
+    return displayName;
+  }
 
   String get playStoreUrl =>
       "https://play.google.com/store/apps/details?id=$packageName";
@@ -49,7 +69,25 @@ const List<MarsApp> marsApps = [
   MarsApp(name: "Mars Books", packageName: "com.catchingcomets.marsbooks", private: true),
 ];
 
+String _stripMarsPrefix(String name) =>
+    name.startsWith("Mars ") ? name.substring(5) : name;
+
+/// Loose Java package name check: at least two dot-separated segments, each
+/// starting with a letter.
+final _packageNamePattern = RegExp(r'^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)+$');
+
+bool isValidPackageName(String packageName) =>
+    _packageNamePattern.hasMatch(packageName);
+
 /// The Mars apps visible given the current unlock state: all public apps, plus
-/// the private ones once [marsAppsUnlockCode] has been entered.
-List<MarsApp> visibleMarsApps(bool unlocked) =>
-    marsApps.where((app) => !app.private || unlocked).toList();
+/// the private ones and the user-added [customPackages] once
+/// [marsAppsUnlockCode] has been entered.
+List<MarsApp> visibleMarsApps(bool unlocked,
+    {List<String> customPackages = const []}) {
+  final builtIn = marsApps.map((app) => app.packageName).toSet();
+  return [
+    ...marsApps,
+    for (final packageName in customPackages)
+      if (!builtIn.contains(packageName)) MarsApp.custom(packageName),
+  ].where((app) => !app.private || unlocked).toList();
+}

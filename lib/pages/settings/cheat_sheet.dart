@@ -22,7 +22,7 @@ const _sections = <(String, List<(String, String)>)>[
     ('Tap widget', 'Open linked app'),
     ('Hold clock', 'Alarm maker'),
     ('Hold event', 'Todo list'),
-    ('Hold temp', 'Sunrise/sunset'),
+    ('Hold temp', 'Sunrise/sunset, UV'),
   ]),
 ];
 

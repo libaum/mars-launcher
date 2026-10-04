@@ -24,8 +24,10 @@ class MarsAppsFragment extends StatelessWidget {
       appsManager.launchApp(app.packageName);
       return;
     }
+
     /// Private apps have no store listing yet.
     if (app.private) return;
+
     /// Prefer the Play Store app, fall back to the web listing.
     final market = Uri.parse("market://details?id=${app.packageName}");
     if (await canLaunchUrl(market)) {
@@ -43,44 +45,56 @@ class MarsAppsFragment extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(30.0, 0, 30, 20),
       child: ValueListenableBuilder<List<String>>(
-        valueListenable: settingsManager.enabledMarsAppsNotifier,
-        builder: (context, enabledPackages, child) {
-          final enabled = enabledPackages.toSet();
-          return ValueListenableBuilder<List<AppInfo>>(
-            valueListenable: appsManager.appsNotifier,
-            builder: (context, installedApps, child) {
-              final installedPackages =
-                  installedApps.map((app) => app.packageName).toSet();
-              final unlocked = settingsManager.marsAppsUnlockedNotifier.value;
-              return LayoutBuilder(
-                builder: (context, constraints) {
-                  return SingleChildScrollView(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: constraints.maxHeight,
+        valueListenable: settingsManager.customMarsAppsNotifier,
+        builder: (context, customPackages, child) =>
+            ValueListenableBuilder<List<String>>(
+          valueListenable: settingsManager.enabledMarsAppsNotifier,
+          builder: (context, enabledPackages, child) {
+            final enabled = enabledPackages.toSet();
+            return ValueListenableBuilder<List<AppInfo>>(
+              valueListenable: appsManager.appsNotifier,
+              builder: (context, installedApps, child) {
+                final installed = {
+                  for (final app in installedApps) app.packageName: app
+                };
+                final unlocked = settingsManager.marsAppsUnlockedNotifier.value;
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for (final app in visibleMarsApps(unlocked,
+                                customPackages: customPackages))
+                              if (enabled.contains(app.packageName))
+                                _MarsAppCard(
+                                  app: app,
+                                  label: app.label(
+                                    renamedName: appsManager
+                                        .renamedApps[app.packageName],
+                                    installedName:
+                                        installed[app.packageName]?.appName,
+                                  ),
+                                  installed:
+                                      installed.containsKey(app.packageName),
+                                  primaryColor: primary,
+                                  onTap: _handleTap,
+                                ),
+                          ],
+                        ),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          for (final app in visibleMarsApps(unlocked))
-                            if (enabled.contains(app.packageName))
-                              _MarsAppCard(
-                                app: app,
-                                installed: installedPackages
-                                    .contains(app.packageName),
-                                primaryColor: primary,
-                                onTap: _handleTap,
-                              ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          );
-        },
+                    );
+                  },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -88,12 +102,14 @@ class MarsAppsFragment extends StatelessWidget {
 
 class _MarsAppCard extends StatelessWidget {
   final MarsApp app;
+  final String label;
   final bool installed;
   final Color primaryColor;
   final Future<void> Function(MarsApp, bool) onTap;
 
   const _MarsAppCard({
     required this.app,
+    required this.label,
     required this.installed,
     required this.primaryColor,
     required this.onTap,
@@ -115,11 +131,13 @@ class _MarsAppCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              app.displayName,
+              label,
               style: TEXT_STYLE_APP_LARGE.copyWith(letterSpacing: 1.0),
               maxLines: 1,
             ),
-            if (!installed)
+
+            /// Private apps have no store listing to point to.
+            if (!installed && !app.private)
               const Text(
                 "play store ↗",
                 style: TextStyle(

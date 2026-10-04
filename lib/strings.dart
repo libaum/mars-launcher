@@ -10,6 +10,8 @@ class Strings {
   static const settingsHiddenApps = "Hidden apps";
   static const settingsMarsApps = "Mars apps";
   static const marsAppsTitle = "Mars apps";
+  static const marsAppsAdd = "+ add app";
+  static const marsAppsAddTitle = "Add by package name";
   static const settingsCredits = "About";
   static const settingsColors = "Colors";
   static const settingsMore = "More";
@@ -62,6 +64,7 @@ class Keys {
   static const hiddenApps = "hiddenApps";
   static const enabledMarsApps = "enabledMarsApps";
   static const marsAppsUnlocked = "marsAppsUnlocked";
+  static const customMarsApps = "customMarsApps";
   static const renamedApps = 'renamedApps';
   static const appsAreSaved = "appsAreSaved";
   static const typeAppClock = "clockApp";
@@ -85,6 +88,7 @@ class Keys {
   static const temperatureLon = "temperatureLon";
   static const sunriseSunsetText = "sunriseSunsetText";
   static const sunriseSunsetUpdatedAt = "sunriseSunsetUpdatedAt";
+  static const uvIndexHourly = "uvIndexHourly";
 }
 
 class JsonKeys {

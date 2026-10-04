@@ -20,5 +20,6 @@ const LOAD_APPS_FROM_JSON = false; /// has to be false on release
 const int? SHOWCASE_TEMPERATURE = null; // e.g. 21
 const String SHOWCASE_SUNRISE = "06:42";
 const String SHOWCASE_SUNSET = "20:14";
+const int SHOWCASE_UV_INDEX = 4;
 
 const double FONT_SIZE_TOP_ROW = 15;
