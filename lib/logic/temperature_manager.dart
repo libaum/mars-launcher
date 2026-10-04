@@ -143,7 +143,7 @@ class TemperatureManager {
   void updateTemperature({bool userInitiated = false, bool isRetry = false}) async {
     if (SHOWCASE_TEMPERATURE != null) {
       _setNewTemperature(SHOWCASE_TEMPERATURE!);
-      _updateSunriseSunsetString("Sunrise: $SHOWCASE_SUNRISE\nSunset:  $SHOWCASE_SUNSET");
+      _updateSunriseSunsetString(_formatSunriseSunset(SHOWCASE_SUNRISE, SHOWCASE_SUNSET));
       final hour = DateTime.now();
       _setUvIndexByHour({DateTime(hour.year, hour.month, hour.day, hour.hour): SHOWCASE_UV_INDEX});
       return;
@@ -236,7 +236,7 @@ class TemperatureManager {
           final sunrise = DateTime.fromMillisecondsSinceEpoch(sunriseUnix.toInt() * 1000);
           final sunset = DateTime.fromMillisecondsSinceEpoch(sunsetUnix.toInt() * 1000);
           _updateSunriseSunsetString(
-              "Sunrise: ${DateFormat.Hm().format(sunrise)}\nSunset:  ${DateFormat.Hm().format(sunset)}");
+              _formatSunriseSunset(DateFormat.Hm().format(sunrise), DateFormat.Hm().format(sunset)));
         }
       }
     } catch (e) {
@@ -319,6 +319,8 @@ class TemperatureManager {
     return !DateUtils.isSameDay(now, _lastSunriseSunsetUpdate);
   }
 
+  String _formatSunriseSunset(String sunrise, String sunset) => "↑ $sunrise   ↓ $sunset";
+
   void _updateSunriseSunsetString(String text) {
     sunriseSunsetString = text;
     _lastSunriseSunsetUpdate = DateTime.now();
@@ -349,7 +351,7 @@ class TemperatureManager {
     if (sunriseSunsetString.isEmpty) return;
     final uvIndex = _currentUvIndex();
     sunriseSunsetNotifier.value =
-        uvIndex == null ? sunriseSunsetString : "$sunriseSunsetString\nUV index: $uvIndex";
+        uvIndex == null ? sunriseSunsetString : "$sunriseSunsetString   UV: $uvIndex";
     await Future.delayed(Duration(seconds: DURATION_SHOW_SUNRISE_SUNSET));
     sunriseSunsetNotifier.value = "";
   }
