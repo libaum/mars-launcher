@@ -45,6 +45,8 @@ const List<MarsApp> marsApps = [
   MarsApp(name: "Mars Sky", packageName: "com.catchingclouds.marssky", private: true),
   MarsApp(name: "Mars North", packageName: "com.catchingclouds.marsnorth", private: true),
   MarsApp(name: "Mars Log", packageName: "com.catchingclouds.marslog", private: true),
+  // New vendor prefix (NEW_APP.md) — release build, not the `.debug` variant.
+  MarsApp(name: "Mars Books", packageName: "com.catchingcomets.marsbooks", private: true),
 ];
 
 /// The Mars apps visible given the current unlock state: all public apps, plus
