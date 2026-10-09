@@ -9,6 +9,8 @@ import 'package:mars_launcher/data/mars_apps.dart';
 import 'package:mars_launcher/logic/apps_manager.dart';
 import 'package:mars_launcher/logic/settings_manager.dart';
 import 'package:mars_launcher/services/service_locator.dart';
+import 'package:mars_launcher/services/shared_prefs_manager.dart';
+import 'package:mars_launcher/strings.dart';
 import 'package:mars_launcher/theme/theme_constants.dart';
 
 const _GRAY = Color(0xFF888888);
@@ -16,6 +18,7 @@ const _GRAY = Color(0xFF888888);
 class MarsAppsFragment extends StatelessWidget {
   final appsManager = getIt<AppsManager>();
   final settingsManager = getIt<SettingsManager>();
+  final _prefs = getIt<SharedPrefsManager>();
 
   MarsAppsFragment({super.key});
 
@@ -38,6 +41,27 @@ class MarsAppsFragment extends StatelessWidget {
     }
   }
 
+  /// Package names of the installed apps, with the Mars ones cached across
+  /// launches: until the first app sync finishes, [installedApps] is empty and
+  /// would grey out every row for a moment.
+  Set<String> _installedPackages(List<AppInfo> installedApps) {
+    if (installedApps.isEmpty) {
+      return (_prefs.readStringList(Keys.installedMarsApps) ?? []).toSet();
+    }
+    final all = {for (final app in installedApps) app.packageName};
+    final mars = {
+      for (final app in marsApps)
+        if (all.contains(app.packageName)) app.packageName,
+      ...all.intersection(settingsManager.customMarsAppsNotifier.value.toSet()),
+    };
+    final cached = _prefs.readStringList(Keys.installedMarsApps);
+    if (cached == null || cached.toSet().difference(mars).isNotEmpty ||
+        mars.difference(cached.toSet()).isNotEmpty) {
+      _prefs.saveData(Keys.installedMarsApps, mars.toList());
+    }
+    return all;
+  }
+
   @override
   Widget build(BuildContext context) {
     final primary = Theme.of(context).primaryColor;
@@ -57,6 +81,7 @@ class MarsAppsFragment extends StatelessWidget {
                 final installed = {
                   for (final app in installedApps) app.packageName: app
                 };
+                final installedPackages = _installedPackages(installedApps);
                 final unlocked = settingsManager.marsAppsUnlockedNotifier.value;
                 return LayoutBuilder(
                   builder: (context, constraints) {
@@ -81,7 +106,7 @@ class MarsAppsFragment extends StatelessWidget {
                                         installed[app.packageName]?.appName,
                                   ),
                                   installed:
-                                      installed.containsKey(app.packageName),
+                                      installedPackages.contains(app.packageName),
                                   primaryColor: primary,
                                   onTap: _handleTap,
                                 ),

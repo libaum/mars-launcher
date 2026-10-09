@@ -83,6 +83,7 @@ class Keys {
   static const keyboardAutofocusEnabled = "keyboard_autofocus_enabled";
   static const fontScaleLevel = "fontScaleLevel";
   static const onboardingCompleted = "onboardingCompleted";
+  static const installedMarsApps = "installedMarsApps";
   static const statusBarFullyHidden = "statusBarFullyHidden";
   static const temperatureCelsius = "temperatureCelsius";
   static const temperatureUpdatedAt = "temperatureUpdatedAt";
