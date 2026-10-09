@@ -7,6 +7,10 @@ import 'package:mars_launcher/services/shared_prefs_manager.dart';
 import 'package:mars_launcher/strings.dart';
 import 'package:mars_launcher/constants/method_channels.dart';
 
+/// Text scale per font size level (small, medium, large).
+const List<double> FONT_SCALE_FACTORS = [0.85, 1.0, 1.2];
+const List<String> FONT_SCALE_LABELS = ["S", "M", "L"];
+
 class SettingsManager {
   static const MethodChannel _openDefaultLauncherSettingsChannel = MethodChannel(MethodChannels.openDefaultLauncherSettings);
   static const MethodChannel _statusBarChannel = MethodChannel(MethodChannels.statusBar);
@@ -20,6 +24,10 @@ class SettingsManager {
   late final ValueNotifierWithKey<int> numberOfShortcutItemsNotifier;
   late final ValueNotifierWithKey<bool> shortcutMode;
   late final ValueNotifierWithKey<bool> keyboardAutofocusEnabledNotifier;
+
+  /// Text size level for lists, search and settings: 0 = small, 1 = medium
+  /// (default), 2 = large. The top row is not scaled. See [fontScaleFor].
+  late final ValueNotifierWithKey<int> fontScaleLevelNotifier;
 
   /// Package names of the Mars apps shown in the swipe-down overview.
   late final ValueNotifierWithKey<List<String>> enabledMarsAppsNotifier;
@@ -46,6 +54,7 @@ class SettingsManager {
     numberOfShortcutItemsNotifier = ValueNotifierWithKey(sharedPrefsManager.readData(Keys.numOfShortcutItems) ?? NUMBER_OF_SHORTCUT_ITEMS_ON_STARTUP, Keys.numOfShortcutItems);
     shortcutMode = ValueNotifierWithKey(sharedPrefsManager.readData(Keys.shortcutMode) ?? true, Keys.shortcutMode);
     keyboardAutofocusEnabledNotifier = ValueNotifierWithKey<bool>(sharedPrefsManager.readData(Keys.keyboardAutofocusEnabled) ?? true, Keys.keyboardAutofocusEnabled);
+    fontScaleLevelNotifier = ValueNotifierWithKey<int>(sharedPrefsManager.readData(Keys.fontScaleLevel) ?? 1, Keys.fontScaleLevel);
     enabledMarsAppsNotifier = ValueNotifierWithKey<List<String>>(
         sharedPrefsManager.readStringList(Keys.enabledMarsApps) ?? marsApps.map((app) => app.packageName).toList(),
         Keys.enabledMarsApps);
@@ -76,6 +85,9 @@ class SettingsManager {
       case Keys.calendarEnabled:
       case Keys.batteryEnabled:
         notifier.value = !notifier.value;
+        break;
+      case Keys.fontScaleLevel:
+        notifier.value = (notifier.value + 1) % FONT_SCALE_FACTORS.length;
         break;
       case Keys.numOfShortcutItems:
         notifier.value = (notifier.value + 1) % (MAX_NUM_OF_SHORTCUT_ITEMS+1);

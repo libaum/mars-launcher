@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mars_launcher/pages/font_scale.dart';
 import 'package:mars_launcher/logic/app_search_manager.dart';
 import 'package:mars_launcher/logic/apps_manager.dart';
 import 'package:mars_launcher/logic/settings_manager.dart';
@@ -143,13 +144,13 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    widget.topRowOverride ?? TopRow(),
+                    UnscaledFont(child: widget.topRowOverride ?? TopRow()),
                     SizedBox(
                       height: HEIGHT_SIZED_BOX,
                       child: ValueListenableBuilder<String>(
                         valueListenable: temperatureManager.sunriseSunsetNotifier,
                         builder: (context, sunriseSunset, child) {
-                          return Center(child: Text(sunriseSunset));
+                          return Center(child: UnscaledFont(child: Text(sunriseSunset)));
                     })),
                     Expanded(
                       child: ValueListenableBuilder<HomeView>(

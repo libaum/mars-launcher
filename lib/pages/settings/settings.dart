@@ -195,6 +195,8 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
                             /// ---- Appearance ----
                             _sectionHeader(context, Strings.settingsGroupAppearance),
 
+                            buildFontSizeRow(),
+
                             ValueListenableBuilder<ThemeMode>(
                                 valueListenable: themeManager.themeModeNotifier,
                                 builder: (context, themeMode, child) {
@@ -413,6 +415,30 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
                     },
                     child: Center(
                         child: Text(numOfShortcutItems.toString(),
+                            style: TEXT_STYLE_SETTINGS_TRAILING)),
+                  ));
+            }),
+      ],
+    );
+  }
+
+  Row buildFontSizeRow() {
+    void cycle() => settingsManager
+        .setNotifierValueAndSave(settingsManager.fontScaleLevelNotifier);
+    return Row(
+      children: [
+        Expanded(
+            child: GenericSettingsButton(
+                onPressed: cycle, name: Strings.settingsFontSize)),
+        ValueListenableBuilder<int>(
+            valueListenable: settingsManager.fontScaleLevelNotifier,
+            builder: (context, level, child) {
+              return SizedBox(
+                  width: 60,
+                  child: TextButton(
+                    onPressed: cycle,
+                    child: Center(
+                        child: Text(FONT_SCALE_LABELS[level],
                             style: TEXT_STYLE_SETTINGS_TRAILING)),
                   ));
             }),

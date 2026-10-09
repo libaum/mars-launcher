@@ -43,6 +43,8 @@ void main() {
     }.entries) {
       when(entry.value).thenReturn(ValueNotifierWithKey<bool>(false, entry.key));
     }
+    when(() => mockSettingsManager.fontScaleLevelNotifier)
+        .thenReturn(ValueNotifierWithKey<int>(1, Keys.fontScaleLevel));
     when(() => mockSettingsManager.enabledMarsAppsNotifier)
         .thenReturn(ValueNotifierWithKey<List<String>>([], Keys.enabledMarsApps));
     when(() => mockSettingsManager.marsAppsUnlockedNotifier)

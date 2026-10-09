@@ -28,6 +28,7 @@ class Strings {
   static const settingsColorsTitle = "Colors";
   static const settingsColorsSearchColor = "Search color";
   static const settingsColorsBackground = "Background color";
+  static const settingsFontSize = "Font size";
 
   /// Standard names
   static const appNameUninitialized = slotDefault;
@@ -80,6 +81,7 @@ class Keys {
   static const darkBackground = "dark_background";
   static const weatherActivatedAtLeastOnce = "weatherActivatedAtLeastOnce";
   static const keyboardAutofocusEnabled = "keyboard_autofocus_enabled";
+  static const fontScaleLevel = "fontScaleLevel";
   static const onboardingCompleted = "onboardingCompleted";
   static const statusBarFullyHidden = "statusBarFullyHidden";
   static const temperatureCelsius = "temperatureCelsius";

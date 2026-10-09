@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mars_launcher/pages/font_scale.dart';
 import 'package:mars_launcher/pages/home/home.dart';
 import 'package:mars_launcher/services/service_locator.dart';
 import 'package:mars_launcher/theme/theme_manager.dart';
@@ -52,6 +53,7 @@ class MarsLauncher extends StatelessWidget {
                 theme: themeManager.lightTheme,
                 darkTheme: themeManager.darkTheme,
                 themeMode: themeMode,
+                builder: (context, child) => AppFontScale(child: child!),
                 home: homeScreen!);
           })),
       child: const Home(),
