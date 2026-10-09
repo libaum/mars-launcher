@@ -1,0 +1,2 @@
+- New font size setting: small, medium or large
+- New setting to turn off the keyboard opening automatically in search
