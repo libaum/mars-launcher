@@ -240,6 +240,9 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
                             /// ---- Other ----
                             _sectionHeader(context, Strings.settingsGroupOther),
 
+                            /// KEYBOARD AUTOFOCUS
+                            buildKeyboardAutofocusRow(),
+
                             GenericSettingsButton(
                                 onPressed: () {
                                   pushOtherPage(HiddenApps());
@@ -253,9 +256,6 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
                                 },
                                 name: Strings.settingsMarsApps,
                                 showChevron: true),
-
-                            /// KEYBOARD AUTOFOCUS
-                            ///buildKeyboardAutofocusRow(),
 
                             GenericSettingsButton(
                                 onPressed: () {
@@ -393,13 +393,14 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        GenericSettingsButton(
-            onPressed: () {
-              settingsManager.setNotifierValueAndSave(
-                  settingsManager.numberOfShortcutItemsNotifier);
-            },
-            name: Strings.settingsAppNumber),
-        Expanded(child: Container()),
+        Expanded(
+          child: GenericSettingsButton(
+              onPressed: () {
+                settingsManager.setNotifierValueAndSave(
+                    settingsManager.numberOfShortcutItemsNotifier);
+              },
+              name: Strings.settingsAppNumber),
+        ),
         ValueListenableBuilder<int>(
             valueListenable: settingsManager.numberOfShortcutItemsNotifier,
             builder: (context, numOfShortcutItems, child) {
@@ -422,13 +423,14 @@ class _SettingsState extends State<Settings> with WidgetsBindingObserver {
   Row buildKeyboardAutofocusRow() {
     return Row(
       children: [
-        GenericSettingsButton(
-            onPressed: () {
-              settingsManager.setNotifierValueAndSave(
-                  settingsManager.keyboardAutofocusEnabledNotifier);
-            },
-            name: Strings.settingsKeyboardAutofocus),
-        Expanded(child: Container()),
+        Expanded(
+          child: GenericSettingsButton(
+              onPressed: () {
+                settingsManager.setNotifierValueAndSave(
+                    settingsManager.keyboardAutofocusEnabledNotifier);
+              },
+              name: Strings.settingsKeyboardAutofocus),
+        ),
         ShowHideButton(
           notifier: settingsManager.keyboardAutofocusEnabledNotifier,
           onPressed: () {

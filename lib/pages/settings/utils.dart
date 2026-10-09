@@ -27,6 +27,9 @@ class GenericSettingsButton extends StatelessWidget {
         onPressed: () {
           onPressed();
         },
+        /// Keeps the label left-aligned when the button is stretched by an
+        /// Expanded parent (rows with a trailing value).
+        style: TextButton.styleFrom(alignment: Alignment.centerLeft),
         child: showChevron
             ? Row(
                 children: [

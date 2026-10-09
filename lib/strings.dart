@@ -17,7 +17,7 @@ class Strings {
   static const settingsMore = "More";
   static const settingsChangeDefaultLauncher = "Set default launcher";
   static const settingsAppNumber = "App number";
-  static const String settingsKeyboardAutofocus = "Keyboard";
+  static const String settingsKeyboardAutofocus = "Keyboard on search";
 
   static const settingsGroupAppShortcuts = " App shortcuts";
   static const settingsGroupAppearance = " Appearance";
