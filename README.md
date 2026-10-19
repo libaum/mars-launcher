@@ -1,67 +1,47 @@
-<h1>
-  Mars Launcher 🚀
-  <a href="https://play.google.com/store/apps/details?id=com.cloudcatcher.mars_launcher">
-    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" align="right" height="45" />
-  </a>
-</h1>
+# Mars Launcher
 
+[<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="60">](https://play.google.com/store/apps/details?id=com.cloudcatcher.mars_launcher)
 
-**Mars Launcher** (**M**inimalist **a**nd **r**eally **s**imple) is a distraction-free home screen replacement for Android built with **Flutter**. It is designed to help users reduce screen time and reclaim their focus. By removing colorful icons and clutter, it leaves only what is essential, following the philosophy of digital minimalism.
+A home screen for Android that gets out of your way. No icon grid, no badges, no colour. Just a short list of the apps you actually use, and gestures for the rest.
 
-![Mars Launcher Showcase](assets/mars-launcher-showcase.png)
+I couldn't switch to a dumb phone, but I wanted mine to feel like one. This is the launcher I built for that, and I use it every day.
 
-## 🎯 Motivation
+<p>
+  <img src="android/fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="19%" />
+  <img src="android/fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="19%" />
+  <img src="android/fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="19%" />
+  <img src="android/fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="19%" />
+  <img src="android/fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="19%" />
+</p>
 
-Modern smartphones are designed to be addictive. Bright colors and notification badges constantly fight for attention. Mars Launcher brings peace back to the device by:
-* **Removing app icons** (text-only interface).
-* **Replacing the status bar** with minimal, functional widgets (clock, battery, weather, calendar events) that can be linked to any app for quick access.
-* **Focusing on utility** with quick access only to the tools you actually need.
+## What it does
 
-## ✨ Key Features
+- **Text-only home screen.** Up to seven shortcuts as plain words. Tap to open, hold to reassign. Rename them if you like ("Social" instead of "Instagram").
+- **Swipe up and type.** The app opens as soon as your search is unique. No extra tap.
+- **Swipe left or right** for two more shortcuts.
+- **Swipe down** for the other Mars apps.
+- **Top row instead of a status bar:** clock, battery, weather, next calendar event. Each one opens the app you link to it. Hold the clock for a quick alarm, the calendar for a to-do list, the weather for sunrise and sunset.
+- **Double tap** switches between dark and light. **Long press** opens settings.
 
-* **Minimalistic Home Screen:** Displays only your most essential apps as a clean text list.
-* **Smart Widget Bar:** Top row shows functional widgets (clock, battery, weather, calendar, events) instead of the status bar.
-    * **Linkable Widgets:** Each widget can be linked to an app for one-tap access (e.g., tap clock to open your preferred clock app, tap battery for settings).
-* **Gesture Control:**
-    * `Swipe Left/Right`: Quick access to customizable app shortcuts (configurable via Settings).
-    * `Swipe Up`: Super fast app search.
-    * `Double Tap`: Toggle instantly between **Light** and **Dark Mode**.
-    * `Long Press`: Open Settings.
-* **Integrated Productivity:** Built-in minimal To-Do list (access via long-press on calendar date).
-* **Privacy Respecting:** Open-source and transparent. Weather data is fetched from [Open-Meteo](https://open-meteo.com/) (no API key or tracking). All data is stored locally on your device.
-* **Customization:** Hide or rename apps for a cleaner look (e.g., "Social" instead of "Instagram"). Enable/disable widgets as needed. Choose from multiple fonts and custom accent/background colors.
+Weather comes from [Open-Meteo](https://open-meteo.com/), which needs no key and no account. Everything else stays on the device. No ads, no tracking, no analytics.
 
-## 🛠 Tech Stack
+## Build
 
-* **Framework:** [Flutter](https://flutter.dev/)
-* **Language:** Dart
-* **Architecture:** Service Locator Pattern with Manager Classes
-* **State Management:** ValueNotifier (Flutter built-in)
-* **Local Storage:** SharedPreferences (for Settings & To-Dos)
+You need the [Flutter SDK](https://docs.flutter.dev/get-started/install) and an Android device or emulator.
 
-## 📥 Installation & Setup
+```bash
+git clone https://github.com/libaum/mars-launcher.git
+cd mars-launcher
+flutter pub get
+flutter run
+```
 
-If you want to build the project from source:
+`./install_release.sh` builds a release APK and installs it next to the debug build.
 
-1.  **Prerequisites:** Ensure you have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed.
-2.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/libaum/mars_launcher.git
-    cd mars_launcher
-    ```
-3.  **Install dependencies:**
-    ```bash
-    flutter pub get
-    ```
-4.  **Run the app:**
-    ```bash
-    flutter run
-    ```
+## Under the hood
 
-## 🤝 Contributing
+Flutter and Dart. State is plain `ValueNotifier`s held by manager classes, wired up with GetIt. Settings and to-dos live in SharedPreferences. See [CLAUDE.md](CLAUDE.md) for the architecture.
 
-Contributions are welcome! If you have an idea for a feature that aligns with the minimalist philosophy, feel free to fork the repo and submit a pull request.
+## License
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT, see [LICENSE](LICENSE).
