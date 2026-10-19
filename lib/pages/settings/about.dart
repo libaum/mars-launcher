@@ -16,7 +16,7 @@ class Credits extends StatefulWidget {
 class _CreditsState extends State<Credits> with WidgetsBindingObserver {
   final themeManager = getIt<ThemeManager>();
 
-  static const String supportEmail = 'contact@catchingclouds.de';
+  static const String supportEmail = 'contact@catchingcomets.dev';
   static const String storeUrl =
       'https://play.google.com/store/apps/details?id=com.cloudcatcher.mars_launcher';
   static const String marsDevPage =
