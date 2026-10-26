@@ -57,6 +57,10 @@ final _eventStart = DateTime.utc(2026, 1, 1, 11, 30);
 const _lightNames = ['sand', 'sage', 'powder', 'blush', 'lavender'];
 const _darkNames = ['navy', 'plum', 'teal', 'burgundy', 'rust'];
 
+/// Picked with the free colour picker instead of a preset.
+const _customLight = {'lemon': Color(0xFFF3EDB8)};
+const _customDark = {'forest': Color(0xFF23361F)};
+
 void main() {
   late ThemeManager theme;
 
@@ -151,7 +155,11 @@ void main() {
     await shoot('Todo');
   });
 
-  final light = {for (final (i, name) in _lightNames.indexed) name: LIGHT_BACKGROUND_PRESETS[i], 'white': Colors.white};
+  final light = {
+    for (final (i, name) in _lightNames.indexed) name: LIGHT_BACKGROUND_PRESETS[i],
+    'white': Colors.white,
+    ..._customLight,
+  };
   for (final MapEntry(key: name, value: color) in light.entries) {
     testWidgets('fan_$name', (tester) async {
       await launch(tester, dark: false, background: color);
@@ -159,9 +167,10 @@ void main() {
     });
   }
 
-  for (final (i, name) in _darkNames.indexed) {
+  final dark = {for (final (i, name) in _darkNames.indexed) name: DARK_BACKGROUND_PRESETS[i], ..._customDark};
+  for (final MapEntry(key: name, value: color) in dark.entries) {
     testWidgets('dark_fan_$name', (tester) async {
-      await launch(tester, dark: true, background: DARK_BACKGROUND_PRESETS[i]);
+      await launch(tester, dark: true, background: color);
       await shoot('dark_fan_$name');
     });
   }
