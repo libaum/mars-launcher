@@ -16,7 +16,7 @@ flutter analyze
 ./install_release.sh              # build, archive under apk_archive/, install
 ./install_release.sh list | restore [versionCode]
 cd android && bundle exec fastlane alpha | production | metadata
-# Store screenshots as goldens, offline → ../graphix/mars_launcher/screenshots/
+# Store screenshots as goldens, offline → ../graphix/apps/launcher/screenshots/
 flutter test --update-goldens store_screenshots/
 ```
 
@@ -24,9 +24,9 @@ Store screenshots (`store_screenshots/`, not part of `flutter test`): the real
 app with `showcase_settings.json`, a fixed app list and mocked platform
 channels (installed apps, calendar event), on a 1080×2340 / 3.0 phone with a
 drawn three-button nav bar. The files keep their `.jpg` names but hold PNG
-data — `slides_v2.yaml` and the Instagram decks reference them; the renderer
+data — `graphix/apps/launcher/store.yaml` and the Instagram decks reference them; the renderer
 reads either. Then re-render the slides with
-`/usr/bin/python3 ../graphix/tools/make_slides_v2.py ../graphix/mars_launcher/slides_v2.yaml`.
+`/usr/bin/python3 ../graphix/tools/make_slides_v2.py ../graphix/apps/launcher/store.yaml`.
 
 The applicationId is `com.cloudcatcher.mars_launcher` — published, never change
 it. Version is `name+versionCode` in `pubspec.yaml`; changelogs go in

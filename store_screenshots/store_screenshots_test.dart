@@ -3,7 +3,7 @@
 //
 //   flutter test --update-goldens store_screenshots/
 //
-// Writes 1080×2340 PNGs straight into graphix/mars_launcher/screenshots/,
+// Writes 1080×2340 PNGs straight into graphix/apps/launcher/screenshots/,
 // where graphix/tools/make_slides_v2.py picks them up. The names keep their
 // old .jpg ending (the slide decks reference them); the renderer reads the
 // PNG data regardless. Outside test/ on purpose: these are not regression
@@ -33,7 +33,7 @@ import 'package:mars_launcher/theme/theme_constants.dart';
 import 'package:mars_launcher/theme/theme_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const _out = '../../graphix/mars_launcher/screenshots';
+const _out = '../../graphix/apps/launcher/screenshots';
 
 /// The phone the old screenshots were taken on: 1080×2340 at 480 dpi,
 /// three-button navigation (48 dp), and a top inset that puts the top row
